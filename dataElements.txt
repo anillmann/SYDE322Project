@@ -1,0 +1,136 @@
+//*** Functions ***//
+	
+	updateMetaData {
+		// udpate the meta data, some the user should be able to update, others not
+	}
+
+	addTransaction {
+		// record cash flows (buy/sell/fees/dividends)
+	}
+
+	calculatePosition {
+		// calculate positions from transactions
+	}
+
+	calcualteMTM {
+		// calculate mark-to-market value from posision
+	}
+
+	calculatePortfolioReturns {
+
+	}
+
+	calculateGains {
+
+	}
+
+//*** Data Elements ***//
+
+	//*** Meta Data Elements ***//
+
+	currency { 
+		// i.e. CAD, USD, EUR, GBP
+		currencyId (PK), 
+		currencyCode, 
+		currencyName
+	}
+
+	country {
+		countryId (PK), 
+		countryCode, 
+		countryName,
+		regionId (FK:region)
+	}
+
+	region {
+		// grouping of countries, i.e. North America, Europe, Emerging Markets
+		// could be user defined
+		regionId (PK),
+		regionName
+	}
+
+	assetClass {
+		// the type of asset
+		// i.e. common stock, preferred stock, bonds, cash
+		assetClassId (PK), 
+		assetClass
+	}
+
+	sector {
+		// from the Global Industry Classification Standard
+		// see https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard
+		sectorId (PK), 
+		sector,
+		sectorCode
+	}
+
+	industry {
+		// sub classification of sector
+		// see https://en.wikipedia.org/wiki/Global_Industry_Classification_Standard
+		industryId (PK),
+		industry, 
+		industryCode,
+		sectorId (FK:sector)
+	}
+
+	company {
+		// company or government entity
+		companyId (PK),
+		company, 
+		marketCap,
+		industryId (FK:industry), 
+		baseCountry (FK:country.countryId)
+	}
+
+	tickermaster {
+		// symbol/indentifier of something being traded
+		// i.e. AAPL, GOOG
+		tickerId (PK),
+		symbol, 
+		assetClassId (FK:assetClass),
+		currencyId (FK:currency),
+		companyId (FK:company),
+		countryId (FK:country)
+	}
+
+	transactionType {
+		transactionTypeId (PK),
+		transactionType // i.e. Buy, Sell, Dividend, Fee, Comission, Invest, Withdraw
+	}
+
+	//*** DATA ELEMENTS ***//
+
+	prices {
+		priceId (PK),
+		priceDate, 
+		tickerId (FK:tickermaster)
+	}
+
+	user {
+		userId (PK),
+		userName, 
+		userPassword
+	}
+
+	account {
+		accountId (PK),
+		accountName
+	}
+
+	transaction/cashFlow {
+		transactionId (PK),
+		transactionTypeId (FK),
+		accountId (FK),
+		transactionDate,
+		amount
+	}
+
+
+
+
+
+
+
+
+
+
