@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Important Exports
+var sqlFactory = require('./sqlFactory.js')
 var exports = module.exports = {};
 exports.loggedIn = false;
 
@@ -144,3 +145,4 @@ exports.loggedIn = false;
 app.listen(3100, function(){
   console.log("Listening on 3100");
 });
+

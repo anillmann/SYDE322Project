@@ -121,6 +121,7 @@
 		transactionId (PK),
 		transactionTypeId (FK),
 		accountId (FK),
+		tickerId (FK),
 		transactionDate,
 		amount
 	}
