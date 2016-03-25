@@ -29,6 +29,9 @@ exports.loggedIn = false;
 
 var sqlGen = new sqlFactory.sqlQuery();
 
+// Global Variables //
+var userId = 1;
+
 // Routes
    
   //  STARTING PAGE  //
@@ -85,7 +88,7 @@ var sqlGen = new sqlFactory.sqlQuery();
               console.log("Got: "+err)
             } else {
               console.log("Success: "+sqlStr);
-              console.log(results);
+              //console.log(results);
               res.send(results);
             }
           }); 
@@ -93,6 +96,26 @@ var sqlGen = new sqlFactory.sqlQuery();
       }
     });
 
+    app.get('/trade', function (req, res) {
+      var sqlParams = { 'userId' : userId };
+      var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+
+      var sqlStr = getAccounts;
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          console.log(results);
+          res.render('trade', {
+            title : 'traderPRO - Trade', 
+            accounts : results
+          });
+        }
+      });
+    });
 
   // TEST CALL  //
     app.post('/datamgmt', function(req, res){

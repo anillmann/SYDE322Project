@@ -1,0 +1,15 @@
+extends layout
+block headScripts
+	script(src='/javascripts/trade.js')
+
+block mainContainer
+	div.paramBox
+		h4 Select Account
+			div
+				select(type="text", name="account")
+					option(selected='selected' disabled) Select sector
+					each account in accounts 
+						option(value=account.accountId) #{account.accountName}
+
+	div.formBox
+		h4 Add Transaction

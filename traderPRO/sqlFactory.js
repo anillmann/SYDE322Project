@@ -21,7 +21,10 @@ exports.sqlQuery = function () {
 		var sql = new selectIndustry(params);
 		return sql;
 	}
-	this.test = "test";
+	this.selectAccount = function (params) {
+		var sql = new selectAccount(params);
+		return sql;
+	}
 }
 
 var selectCountry = function () {
@@ -47,4 +50,9 @@ var selectIndustry = function (params) {
 		qry = qry.where("sectorId="+sectorId);
 	}
 	this.sqlStr = qry.toString();
+}
+
+var selectAccount = function (params) {
+	var userId = params.userId;
+	this.sqlStr = squel.select().from("account").where("userId="+userId).toString();
 }
