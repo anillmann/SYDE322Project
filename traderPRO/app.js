@@ -39,6 +39,11 @@ var userId = 1;
       res.render('index', { title: 'traderPRO'});
     });
 
+    app.post('/index', function (req, res) {
+      var sqlParams = req.body.params;
+      console.log(sqlParams);
+    });
+
   //  DATA MGMT PAGE   //
     app.get('/datamgmt', function(req, res){
       console.log('datamgmt GET called');
@@ -122,7 +127,8 @@ var userId = 1;
       console.log('datamgmt POST called');
     });
 
-  //  Database Calls  //
+  
+//  Database Calls  //
       app.post('/exec_sp',function(req,res){
       // this is a general call that will execute any sp with parameters in the form:
       /*  
@@ -212,7 +218,6 @@ var userId = 1;
       });
 
     });
-
 
 
 

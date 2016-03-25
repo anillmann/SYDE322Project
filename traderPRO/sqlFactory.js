@@ -56,3 +56,4 @@ var selectAccount = function (params) {
 	var userId = params.userId;
 	this.sqlStr = squel.select().from("account").where("userId="+userId).toString();
 }
+

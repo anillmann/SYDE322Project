@@ -1,30 +1,28 @@
-//PAGE INCOMPLETE
+ $(document).ready(function () {   
 
-var attempt = 3; // Variable to count number of attempts.
-// Below function Executes on click of login button.
-function validate(){
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    if ( username == "user" && password == "password"){
-        alert ("Login successfully");
-        window.location = "success.html"; // Redirecting to other page.
-        return false;
-    }
-    else{
-        attempt --;// Decrementing by one.
-        alert("You have left "+attempt+" attempt;");
-        // Disabling fields after 3 attempts.
-        if( attempt == 0){
-            document.getElementById("username").disabled = true;
-            document.getElementById("password").disabled = true;
-            document.getElementById("submit").disabled = true;
-            return false;
-        }
-    }
-}
+    $('#login-submit').click( function () {
+        var username = $('#login-field-username input').val();
+        var password = $('#login-field-password input').val();
 
-function createUser(){
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    
-}
+        var data = JSON.stringify({
+            'params' : {
+                'username' : username, 
+                'password' : password
+            }
+        })
+
+        console.log(data);
+
+        $.ajax('index',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                console.log('POST Worked');
+            }
+        });
+
+    });
+
+});
