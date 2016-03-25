@@ -8,8 +8,8 @@ block mainContainer
 	
 	div.formBox
 		p Add new company 
-		div(id='add_comp')
-			form(name='add_comp_form', action="/addcomp_submit", method="post")
+		div(id='add-company')
+			form(name='add-company-form', action="/addcomp_submit", method="post")
 				fieldset
 					div
 						label(for='companyName') Company Name:
@@ -17,13 +17,13 @@ block mainContainer
 					div
 						label(for='marketCap') Market Capitalization:
 						input(type="number", name="marketCap")
-					div
+					div(id='add-company-field-sector')
 						label(for='sector') Sector:
 						select(type="text", name="sector")
 							option(selected='selected' disabled) Select sector
 							each sector in sectors 
-								option(val=sector.sectorId) #{sector.sector}
-					div
+								option(value=sector.sectorId) #{sector.sector}
+					div(id='add-company-field-industry').hidden
 						label(for='industry') Industry:
 						select(type="text", name="industry")
 							option(selected='selected' disabled) Select industry
