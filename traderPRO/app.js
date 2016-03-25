@@ -7,6 +7,7 @@ var mysql = require('mysql');
 var conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
+  port: 3307,
   password: 'root',
   database: 'traderPRO',
   multipleStatements: true
