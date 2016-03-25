@@ -6,10 +6,20 @@ block mainContainer
 	div.paramBox
 		h4 Select Account
 			div
-				select(type="text", name="account")
+				select(type="text", name="account", id="account-select")
 					option(selected='selected' disabled) Select sector
 					each account in accounts 
 						option(value=account.accountId) #{account.accountName}
 
-	div.formBox
-		h4 Add Transaction
+	div.hidden-before-param
+		div.formBox
+			h4 Add Transaction
+			div(id='add-trans')
+				form(id='add-trans-form')
+					fieldset
+						div(id='add-trans-field-assetClass')
+							label(for='assetClass') Industry:
+							select(type="text", name="assetClass")
+								option(selected='selected' disabled) Select asset class
+								each assetClass in assetClasses
+									option(value=assetClass.assetClassId) #{assetClass.assetClass}

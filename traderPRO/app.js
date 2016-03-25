@@ -134,8 +134,9 @@ var userId = 1;
     app.get('/trade', function (req, res) {
       var sqlParams = { 'userId' : userId };
       var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+      var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
 
-      var sqlStr = getAccounts;
+      var sqlStr = getAccounts + getAssetClasses;
 
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -143,10 +144,11 @@ var userId = 1;
           console.log("Got: "+err)
         } else {
           console.log("Success: "+sqlStr);
-          console.log(results);
+          //console.log(results);
           res.render('trade', {
             title : 'traderPRO - Trade', 
-            accounts : results
+            accounts : results[0],
+            assetClasses : results[1]
           });
         }
       });
