@@ -29,6 +29,10 @@ exports.sqlQuery = function () {
 		var sql = new selectAccount(params);
 		return sql;
 	}
+	this.selectValidTransTypes = function (params) {
+		var sql = new selectValidTransTypes(params);
+		return sql;
+	}
 	this.execSP = function (sp,input_params,output_params) {
 		var sql = new execSP(sp,input_params,output_params);
 		return sql;
@@ -67,6 +71,11 @@ var selectIndustry = function (params) {
 var selectAccount = function (params) {
 	var userId = params.userId;
 	this.sqlStr = squel.select().from("account").where("userId="+userId).toString();
+}
+
+var selectValidTransTypes = function (params) {
+	var assetClassId = params.assetClassId;
+	this.sqlStr	= squel.select().from("v_transtypes").where("assetClassId="+assetClassId).toString();
 }
 
 var execSP = function (sp,input_params,output_params) {

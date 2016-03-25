@@ -155,6 +155,30 @@ var userId = 1;
       });
     });
 
+    app.post('/trade', function (req, res) {
+      var todo = req.body.todo;
+      var params = req.body.params;
+      var sqlStr;
+
+      switch (todo) {
+        case 'getTransTypes' :
+          sqlStr = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
+          break;
+      }
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.send(results);
+        }
+      });
+
+    });
+
   // TEST CALL  //
     app.post('/datamgmt', function(req, res){
       console.log('datamgmt POST called');

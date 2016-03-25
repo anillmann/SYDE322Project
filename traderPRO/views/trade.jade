@@ -18,8 +18,11 @@ block mainContainer
 				form(id='add-trans-form')
 					fieldset
 						div(id='add-trans-field-assetClass')
-							label(for='assetClass') Industry:
+							label(for='assetClass') Asset Class:
 							select(type="text", name="assetClass")
 								option(selected='selected' disabled) Select asset class
 								each assetClass in assetClasses
 									option(value=assetClass.assetClassId) #{assetClass.assetClass}
+						div(id='add-trans-field-transType').hidden
+							label(for='transType') Transaction Type:
+							select(type="text", name="transType")
