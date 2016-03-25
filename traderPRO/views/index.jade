@@ -3,3 +3,22 @@ extends layout
 block mainContainer
 	p Hello World!
 
+
+html
+    head
+        title= "TraderPRO Login"
+        <!-- Include CSS File Here -->
+        link(rel='stylesheet', href='css/login.css') 
+        <!-- Include JS File Here -->
+        script(src='javascripts/login.js')
+    body(bgcolor='53788E')
+        div.container
+            div.main
+                h2 TraderPRO
+                form(id='form_id', method='post', name='myform', bgcolor='7B98A9')
+                    label Email :
+                    input(type='text', name='username', id='username')
+                    label Password :
+                    input(type='password', name='password', id='password')
+                    input(type='loginButton', value='Login', id='submit', onclick='validate()')
+                    input(type='signUpButton', value='Create Account', id='submit', onclick='checkAccount()')
