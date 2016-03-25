@@ -1,16 +1,5 @@
 $(document).ready(function(){
 
-	// functions
-	function appendList(ids,tag,data) {
-		// appends list options to select forms given ids
-		for (id in ids) {
-			$(ids[id]).empty() //.append('<option selected disabled>Select value</option>')
-			for (x in data) {
-				$(ids[id]).append('<' + tag + '>' + data[x] + '</' + tag +'>');
-			}
-		}
-	}
-
 	// test
 	$('#test').click(function(){
 			
@@ -20,6 +9,7 @@ $(document).ready(function(){
 			'table' : 'sector'
 		});
 
+		console.log('clicked');
 
 		$.ajax('exec_qry',{
 			type : 'POST',

@@ -7,6 +7,7 @@ var mysql = require('mysql');
 var conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
+  port: 3307,
   password: 'root',
   database: 'traderPRO',
   multipleStatements: true
@@ -22,9 +23,11 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Important Exports
-var sqlFactory = require('./sqlFactory.js')
+var sqlFactory = require('./sqlFactory.js');
 var exports = module.exports = {};
 exports.loggedIn = false;
+
+var sqlGen = new sqlFactory.sqlQuery();
 
 // Routes
    
@@ -38,7 +41,33 @@ exports.loggedIn = false;
       console.log('datamgmt GET called');
       res.render('datamgmt', {
         title : 'traderPRO - Data Management'
-      })
+      });
+    });
+
+    // META DATA MGMT
+    app.get('/metadatamgmt', function(req, res){
+      // queries to get static data
+      var getSectors = sqlGen.selectSector().sqlStr + "; ";
+      var getCurrencies = sqlGen.selectCurrency().sqlStr + "; ";
+
+      console.log(getCurrencies);
+
+      var sqlStr = getSectors + getCurrencies;
+      
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.render('metadatamgmt', {
+            title : 'traderPRO - Metadata Management', 
+            sectors : results[0],
+            currencies : results[1]
+          });
+        }
+      });       
     });
 
 
@@ -145,4 +174,6 @@ exports.loggedIn = false;
 app.listen(3100, function(){
   console.log("Listening on 3100");
 });
+
+
 
