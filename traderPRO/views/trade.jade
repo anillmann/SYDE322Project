@@ -23,6 +23,13 @@ block mainContainer
 								option(selected='selected' disabled) Select asset class
 								each assetClass in assetClasses
 									option(value=assetClass.assetClassId) #{assetClass.assetClass}
-						div(id='add-trans-field-transType').hidden
-							label(for='transType') Transaction Type:
-							select(type="text", name="transType")
+						div.hidden
+							div(id='add-trans-field-transType')
+								label(for='transType') Transaction Type:
+								select(type="text", name="transType")
+							div(id='add-trans-field-ticker')
+								label(for='ticker') Ticker:
+								select(type='text', name='ticker')
+							div(id='add-trans-field-transDate')
+								label(for='transDate') Transaction Date:
+								input(type='text', name='transDate').date-field

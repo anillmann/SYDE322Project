@@ -2,7 +2,9 @@ var accountId = null;
 
 $(document).ready( function () {
 
-	$('.hidden-before-param .hidden').hide();
+	$('.hidden-before-param').hide();
+	$('.hidden').hide();
+	$('.date-field').datepicker();
 
 	$('#account-select').change( function () {
 		accountId = $(this).val();
@@ -25,18 +27,21 @@ $(document).ready( function () {
 			dataType : 'JSON',
 			data : data,
 			success : function (results) {
-				var thing = [], things = [];
-				for (x in results) {
-					thing = [results[x].transTypeId, results[x].transType];
-					things.push(thing);
+				var thing = [], transTypes = [], tickers = [];
+				for (x in results[0]) {
+					thing = [results[0][x].transTypeId, results[0][x].transType];
+					transTypes.push(thing);
 				}
-				var list = $('#add-trans-field-transType select');
-				appendList(list,'option',things);
-				$('#add-trans-field-transType').show();
+				for (x in results[1]) {
+					thing = [results[1][x].tickerId, results[1][x].symbol];
+					tickers.push(thing);
+				}
+				var transTypeList = $('#add-trans-field-transType select');
+				appendList(transTypeList,'option',transTypes);
+				var tickerList = $('#add-trans-field-ticker select');
+				appendList(tickerList,'option',tickers);
+				$('.hidden').show();
 			}
 		});
-
-
 	});
-
 });

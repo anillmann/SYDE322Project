@@ -162,7 +162,9 @@ var userId = 1;
 
       switch (todo) {
         case 'getTransTypes' :
-          sqlStr = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
+          var getValidTransTypes = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
+          var getTickers = sqlGen.selectTickers(params).sqlStr + "; ";
+          sqlStr = getValidTransTypes + getTickers;
           break;
       }
 
