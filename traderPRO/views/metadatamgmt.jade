@@ -5,12 +5,28 @@ block headScripts
 block mainContainer
 	p This is the metadata mgmt page
 
-	p Add new company 
-	div(id='add_comp')
-		form(name='add_comp_form', action="/addcomp_submit", method="post")
-			input(type="text", name="compName")
-			input(type="text", name="markCap")
-			input(type="text", name="industry")
+	
+	div.formBox
+		p Add new company 
+		div(id='add_comp')
+			form(name='add_comp_form', action="/addcomp_submit", method="post")
+				fieldset
+					div
+						label(for='companyName') Company Name:
+						input(type="text", name="companyName")
+					div
+						label(for='marketCap') Market Capitalization:
+						input(type="number", name="marketCap")
+					div
+						label(for='sector') Sector:
+						select(type="text", name="sector")
+							option(selected='selected' disabled) Select sector
+							each sector in sectors 
+								option(val=sector.sectorId) #{sector.sector}
+					div
+						label(for='industry') Industry:
+						select(type="text", name="industry")
+							option(selected='selected' disabled) Select industry
 
 	p Add new ticker
 	div(id='add_ticker')

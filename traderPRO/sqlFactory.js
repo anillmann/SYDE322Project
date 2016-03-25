@@ -13,6 +13,15 @@ exports.sqlQuery = function () {
 		var sql = new selectAssetClass();
 		return sql;
 	}
+	this.selectSector = function () {
+		var sql = new selectSector();
+		return sql;
+	}
+	this.selectIndustry = function () {
+		var sql = new selectIndustry();
+		return sql;
+	}
+	this.test = "test";
 }
 
 var selectCountry = function () {
@@ -25,4 +34,12 @@ var selectCurrency = function () {
 
 var selectAssetClass = function () {
 	this.sqlStr = squel.select().from("assetClass").toString();
+}
+
+var selectSector = function () {
+	this.sqlStr = squel.select().from("sector").toString();
+}
+
+var selectIndustry = function () {
+	this.sqlStr = squel.select().from("industry").toString();
 }
