@@ -1,23 +1,18 @@
-//- extends layout
+extends layout
+block headScripts
+    script(src='/javascripts/login.js')
 
-//- block mainContainer
-//- 	p Hello World!
-
-html
-    head
-        title= "TraderPRO Login"
-        <!-- Include CSS File Here -->
-        link(rel='stylesheet', href='/stylesheets/login.css') 
-        <!-- Include JS File Here -->
-        script(src='javascripts/login.js')
-    body(bgcolor='53788E')
-        div.container
-            div.main
-                h2 TraderPRO
-                form(id='form_id', method='post', name='myform', bgcolor='7B98A9')
-                    label Email :
-                    input(type='text', name='username', id='username')
-                    label Password :
-                    input(type='password', name='password', id='password')
-                    input(type='loginButton', value='Login', id='submit', onclick='validate()')
-                    input(type='signUpButton', value='Create Account', id='submit', onclick='checkAccount()')
+block mainContainer
+    div.formBox
+        div
+            form(id='login-form')
+                fieldset
+                    div(id='login-field-username')
+                        label(for='username') Email:
+                        input(type='text', name='username')
+                    div(id='login-field-password')
+                        label(for='password') Password:
+                        input(type='password', name='password')
+                    div
+                        input(type='button', value='Login', id='login-submit')
+                        input(type='button', value='Create Account', id='createUser-submit')

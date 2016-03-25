@@ -29,6 +29,10 @@ exports.sqlQuery = function () {
 		var sql = new selectAccount(params);
 		return sql;
 	}
+	this.execSP = function (sp,input_params,output_params) {
+		var sql = new execSP(sp,input_params,output_params);
+		return sql;
+	}
 }
 
 var selectCountry = function () {
@@ -64,3 +68,26 @@ var selectAccount = function (params) {
 	var userId = params.userId;
 	this.sqlStr = squel.select().from("account").where("userId="+userId).toString();
 }
+
+var execSP = function (sp,input_params,output_params) {
+	var str = "CALL ";
+	str += sp + "('";
+	  for (x in input_params) {
+	    str += input_params[x] + "','"
+	  }
+	  str = str.substring(0, str.length - 1); //remove the last ', output vars dont need it
+
+	  for (i=1;i<=output_params;i++) {
+	    str += "@o" + i + ",";
+	  }
+	  str = str.substring(0, str.length - 1);
+	  str +=  "); ";
+	  
+	  str += "SELECT ";
+	  for (i=1;i<=output_params;i++) {
+	      str += "@o" + i + ",";
+	  }
+	  str = str.substring(0, str.length - 1) + ";";
+    this.sqlStr = str.toString();
+}
+
