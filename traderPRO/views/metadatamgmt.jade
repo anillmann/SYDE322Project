@@ -5,9 +5,17 @@ block headScripts
 block mainContainer
 	p This is the metadata mgmt page
 
+	p Add new company 
+	div(id='add_comp')
+		form(name='add_comp_form', action="/addcomp_submit", method="post")
+			input(type="text", name="compName")
+			input(type="text", name="markCap")
+			input(type="text", name="industry")
+
 	p Add new ticker
 	div(id='add_ticker')
-
+		form(name='add_ticker_form', action="/addticker_submit", method="post")
+			input(type="text", name="tick_comp")
 
 	p Update existing ticker
 	div(id='select_ticker') 
