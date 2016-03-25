@@ -5,13 +5,12 @@
         var password = $('#login-field-password input').val();
 
         var data = JSON.stringify({
+            'todo' : 'validate',
             'params' : {
                 'username' : username, 
                 'password' : password
             }
         })
-
-        console.log(data);
 
         $.ajax('index',{
             type : 'POST',
@@ -19,7 +18,9 @@
             dataType : 'JSON',
             data : data,
             success : function (results) {
-                console.log('POST Worked');
+                if (results) {
+                    console.log("Validated");
+                }
             }
         });
 

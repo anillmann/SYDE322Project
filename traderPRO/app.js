@@ -40,8 +40,32 @@ var userId = 1;
     });
 
     app.post('/index', function (req, res) {
-      var sqlParams = req.body.params;
-      console.log(sqlParams);
+      var params = req.body.params;
+      var todo = req.body.todo;
+      var sqlStr;  
+
+      switch(todo) {
+        case 'validate' :
+          sqlStr = sqlGen.execSP('validate_login',params,2).sqlStr;
+          conn.query(sqlStr, function (err, results) {
+            if (err) {
+              console.log("Tried: "+sqlStr);
+              console.log("Got: "+err)
+            } else {
+              console.log("Success: "+sqlStr);
+              console.log(results[1]);
+              var succ = results[1][0]['@o1'];
+              var id = results[1][0]['@o2'];
+              if (succ==0) {
+                userId = id;
+                res.send(true);
+              } else {
+                res.send(false);
+              }
+            }
+          }); 
+          break
+      }
     });
 
   //  DATA MGMT PAGE   //
