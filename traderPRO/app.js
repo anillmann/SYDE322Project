@@ -175,6 +175,32 @@ var userId = 1;
       });
     });
 
+    app.post('/trade', function (req, res) {
+      var todo = req.body.todo;
+      var params = req.body.params;
+      var sqlStr;
+
+      switch (todo) {
+        case 'getTransTypes' :
+          var getValidTransTypes = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
+          var getTickers = sqlGen.selectTickers(params).sqlStr + "; ";
+          sqlStr = getValidTransTypes + getTickers;
+          break;
+      }
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.send(results);
+        }
+      });
+
+    });
+
   // TEST CALL  //
     app.post('/datamgmt', function(req, res){
       console.log('datamgmt POST called');
