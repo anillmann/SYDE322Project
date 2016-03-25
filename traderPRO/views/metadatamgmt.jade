@@ -7,7 +7,7 @@ block mainContainer
 
 	
 	div.formBox
-		p Add new company 
+		h4 Add new company 
 		div(id='add-company')
 			form(name='add-company-form', action="/addcomp_submit", method="post")
 				fieldset
@@ -28,8 +28,9 @@ block mainContainer
 						select(type="text", name="industry")
 							option(selected='selected' disabled) Select industry
 
-	p Add new ticker
-	div(id='add_ticker')
+	div.formBox
+		h4 Add new ticker
+		div(id='add_ticker')
 			form(name='add_tick_form', action="/addtick_submit", method="post")
 				fieldset
 					div
@@ -60,5 +61,29 @@ block mainContainer
 							each currency in currencies 
 								option(val=currency.currencyId) #{currency.currencyCode}					
 
-	p Update existing ticker
-	div(id='select_ticker') 
+	h4 Update Existing Company
+	div.paramBox
+		h4 Select Company
+			div
+				select(type="text", name="company")
+					option(selected='selected' disabled) Select company
+					each company in companies 
+						option(value=company.companyId) #{company.companyName}
+
+	div.formBox
+		h4 Update Company Information
+			fieldset
+				div
+					label(for='marketCap') Market Capitalization:
+					input(type="number", name="marketCap")
+				div(id='update-company-field-sector')
+					label(for='sector') Sector:
+					select(type="text", name="sector")
+						option(selected='selected' disabled) Select sector
+						each sector in sectors 
+							option(value=sector.sectorId) #{sector.sector}
+				div(id='update-company-field-industry')
+					label(for='industry') Industry:
+					select(type="text", name="industry")
+						option(selected='selected' disabled) Select industry
+
