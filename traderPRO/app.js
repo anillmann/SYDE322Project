@@ -39,15 +39,26 @@ exports.loggedIn = false;
       console.log('datamgmt GET called');
       res.render('datamgmt', {
         title : 'traderPRO - Data Management'
-      })
+      });
     });
 
     // META DATA MGMT
     app.get('/metadatamgmt', function(req, res){
-      console.log('metadatamgmt GET called');
-      res.render('metadatamgmt', {
-        title : 'traderPRO - Metadata Management'
-      })
+      // queries to get static data
+      getCurrencies = sqlFactory.selectCurrency().sqlStr;
+
+      sqlStr = getCurrencies
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          res.render('metadatamgmt', {
+            title : 'traderPRO - Metadata Management', 
+            currencies : results[0];
+          });
+        }
+      });       
     });
 
 
