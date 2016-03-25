@@ -41,6 +41,14 @@ exports.loggedIn = false;
       })
     });
 
+    // META DATA MGMT
+    app.get('/metadatamgmt', function(req, res){
+      console.log('metadatamgmt GET called');
+      res.render('metadatamgmt', {
+        title : 'traderPRO - Metadata Management'
+      })
+    });
+
 
   // TEST CALL  //
     app.post('/datamgmt', function(req, res){
