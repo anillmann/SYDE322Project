@@ -30,8 +30,35 @@ block mainContainer
 
 	p Add new ticker
 	div(id='add_ticker')
-		form(name='add_ticker_form', action="/addticker_submit", method="post")
-			input(type="text", name="tick_comp")
+			form(name='add_tick_form', action="/addtick_submit", method="post")
+				fieldset
+					div
+						label(for='companyName') Company Name:
+						select(type="text", name="companyName")
+							option(selected='selected' disabled) Select company
+							each company in companies 
+								option(val=company.companyId) #{company.company}
+					div
+						label(for='tickSymbol') Ticker Symbol:
+						input(type="text", name="tickSymbol")
+					div
+						label(for='assetClass') Asset Class:
+						select(type="text", name="assetClass")
+							option(selected='selected' disabled) Select asset class
+							each assetClass in assetClasses 
+								option(val=assetClass.assetClassId) #{assetClass.assetClass}
+					div
+						label(for='country') Country:
+						select(type="text", name="country")
+							option(selected='selected' disabled) Select country
+							each country in countries 
+								option(val=country.countryId) #{country.country}
+					div
+						label(for='currency') Currency:
+						select(type="text", name="currency")
+							option(selected='selected' disabled) Select currency
+							each currency in currencies 
+								option(val=currency.currencyId) #{currency.currencyCode}					
 
 	p Update existing ticker
 	div(id='select_ticker') 
