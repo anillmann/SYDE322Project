@@ -70,6 +70,29 @@ var sqlGen = new sqlFactory.sqlQuery();
       });       
     });
 
+    app.post('/metadatamgmt', function (req, res) {
+      var todo = req.body.todo;
+      var sqlStr;
+      switch (todo) {
+        case 'getIndustries' :
+          var sqlParams = req.body.sqlParams;
+          console.log(sqlParams);
+          var getIndustries = sqlGen.selectIndustry(sqlParams).sqlStr;
+          sqlStr = getIndustries;
+          conn.query(sqlStr, function (err, results) {
+            if (err) {
+              console.log("Tried: "+sqlStr);
+              console.log("Got: "+err)
+            } else {
+              console.log("Success: "+sqlStr);
+              console.log(results);
+              res.send(results);
+            }
+          }); 
+          break;
+      }
+    });
+
 
   // TEST CALL  //
     app.post('/datamgmt', function(req, res){

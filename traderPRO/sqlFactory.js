@@ -17,8 +17,8 @@ exports.sqlQuery = function () {
 		var sql = new selectSector();
 		return sql;
 	}
-	this.selectIndustry = function () {
-		var sql = new selectIndustry();
+	this.selectIndustry = function (params) {
+		var sql = new selectIndustry(params);
 		return sql;
 	}
 	this.test = "test";
@@ -40,6 +40,11 @@ var selectSector = function () {
 	this.sqlStr = squel.select().from("sector").toString();
 }
 
-var selectIndustry = function () {
-	this.sqlStr = squel.select().from("industry").toString();
+var selectIndustry = function (params) {
+	var qry = squel.select().from("industry");
+	if (params) {
+		var sectorId = params.sectorId;
+		qry = qry.where("sectorId="+sectorId);
+	}
+	this.sqlStr = qry.toString();
 }
