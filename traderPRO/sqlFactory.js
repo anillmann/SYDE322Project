@@ -21,6 +21,10 @@ exports.sqlQuery = function () {
 		var sql = new selectIndustry(params);
 		return sql;
 	}
+	this.selectCompany = function () {
+		var sql = new selectCompany();
+		return sql;
+	}
 	this.test = "test";
 }
 
@@ -38,6 +42,10 @@ var selectAssetClass = function () {
 
 var selectSector = function () {
 	this.sqlStr = squel.select().from("sector").toString();
+}
+
+var selectCompany = function () {
+	this.sqlStr = squel.select().from("company").toString();
 }
 
 var selectIndustry = function (params) {

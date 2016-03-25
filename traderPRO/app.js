@@ -49,10 +49,13 @@ var sqlGen = new sqlFactory.sqlQuery();
       // queries to get static data
       var getSectors = sqlGen.selectSector().sqlStr + "; ";
       var getCurrencies = sqlGen.selectCurrency().sqlStr + "; ";
+      var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
+      var getCompanies = sqlGen.selectCompany().sqlStr + "; ";
+      var getCountries = sqlGen.selectCountry().sqlStr + "; ";
 
       console.log(getCurrencies);
 
-      var sqlStr = getSectors + getCurrencies;
+      var sqlStr = getSectors + getCurrencies + getAssetClasses + getCompanies + getCountries;
       
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -64,7 +67,10 @@ var sqlGen = new sqlFactory.sqlQuery();
           res.render('metadatamgmt', {
             title : 'traderPRO - Metadata Management', 
             sectors : results[0],
-            currencies : results[1]
+            currencies : results[1],
+            assetClasses : results[2],
+            companies : results[3],
+            countries : results[4]
           });
         }
       });       
