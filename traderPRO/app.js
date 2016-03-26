@@ -47,26 +47,46 @@ var userId = 1;
       switch(todo) {
         case 'validate' :
           sqlStr = sqlGen.execSP('validate_login',params,2).sqlStr;
+          conn.query(sqlStr, function (err, results) {
+            if (err) {
+              console.log("Tried: "+sqlStr);
+              console.log("Got: "+err)
+            } 
+            else {
+              console.log("Success: "+sqlStr);
+              console.log(results[1]);
+              var succ = results[1][0]['@o1'];
+              var id = results[1][0]['@o2'];
+              console.log("Succ is "+succ);
+              res.send(JSON.stringify({'success':succ}));
+              if (succ == 0 ) {
+                userId = id;
+              }
+            }
+          });
           break;
         case 'create' :
           sqlStr = sqlGen.execSP('insert_user',params,2).sqlStr;
+          conn.query(sqlStr, function (err, results) {
+            if (err) {
+              console.log("Tried: "+sqlStr);
+              console.log("Got: "+err)
+            } 
+            else {
+              console.log("Success: "+sqlStr);
+              console.log(results[1]);
+              var succ = results[1][0]['@o1'];
+              var id = results[1][0]['@o2'];
+              console.log("Succ is "+succ);
+              res.send(JSON.stringify({'success':succ}));
+              if (succ == 0 ) {
+                userId = id;
+              }
+            }
+          });
           break;
       }
-      conn.query(sqlStr, function (err, results) {
-        if (err) {
-          console.log("Tried: "+sqlStr);
-          console.log("Got: "+err)
-        } else {
-          console.log("Success: "+sqlStr);
-          console.log(results[1]);
-          var succ = results[1][0]['@o1'];
-          var id = results[1][0]['@o2'];
-          res.send(succ);
-          if (succ == 0 ) {
-            userId = id;
-          }
-        }
-      });
+      
     });
 
   //  DATA MGMT PAGE   //
@@ -175,6 +195,9 @@ var userId = 1;
           var getValidTransTypes = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
           var getTickers = sqlGen.selectTickers(params).sqlStr + "; ";
           sqlStr = getValidTransTypes + getTickers;
+          break;
+        case 'getTickerDetails' :
+          sqlStr = sqlGen.selectTickers(params).sqlStr + "; ";
           break;
       }
 

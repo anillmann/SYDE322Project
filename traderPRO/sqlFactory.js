@@ -85,6 +85,7 @@ var selectValidTransTypes = function (params) {
 var selectTickers = function (params) {
 	var qry = squel.select().from("v_tickers");
 	if (params.assetClassId) { qry.where("assetClassId="+params.assetClassId); }
+	if (params.tickerId) { qry.where("tickerId="+params.tickerId); }
 	this.sqlStr = qry.toString();
 }
 
