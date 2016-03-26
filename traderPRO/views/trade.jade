@@ -7,7 +7,7 @@ block mainContainer
 		h4 Select Account
 			div
 				select(type="text", name="account", id="account-select")
-					option(selected='selected' disabled) Select sector
+					option(selected='selected' disabled) Select account
 					each account in accounts 
 						option(value=account.accountId) #{account.accountName}
 
