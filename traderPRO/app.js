@@ -47,25 +47,26 @@ var userId = 1;
       switch(todo) {
         case 'validate' :
           sqlStr = sqlGen.execSP('validate_login',params,2).sqlStr;
-          conn.query(sqlStr, function (err, results) {
-            if (err) {
-              console.log("Tried: "+sqlStr);
-              console.log("Got: "+err)
-            } else {
-              console.log("Success: "+sqlStr);
-              console.log(results[1]);
-              var succ = results[1][0]['@o1'];
-              var id = results[1][0]['@o2'];
-              if (succ==0) {
-                userId = id;
-                res.send(true);
-              } else {
-                res.send(false);
-              }
-            }
-          }); 
-          break
+          break;
+        case 'create' :
+          sqlStr = sqlGen.execSP('insert_user',params,2).sqlStr;
+          break;
       }
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          console.log(results[1]);
+          var succ = results[1][0]['@o1'];
+          var id = results[1][0]['@o2'];
+          res.send(succ);
+          if (succ == 0 ) {
+            userId = id;
+          }
+        }
+      });
     });
 
   //  DATA MGMT PAGE   //
@@ -140,8 +141,9 @@ var userId = 1;
     app.get('/trade', function (req, res) {
       var sqlParams = { 'userId' : userId };
       var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+      var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
 
-      var sqlStr = getAccounts;
+      var sqlStr = getAccounts + getAssetClasses;
 
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -149,13 +151,40 @@ var userId = 1;
           console.log("Got: "+err)
         } else {
           console.log("Success: "+sqlStr);
-          console.log(results);
+          //console.log(results);
           res.render('trade', {
             title : 'traderPRO - Trade', 
-            accounts : results
+            accounts : results[0],
+            assetClasses : results[1]
           });
         }
       });
+    });
+
+    app.post('/trade', function (req, res) {
+      var todo = req.body.todo;
+      var params = req.body.params;
+      var sqlStr;
+
+      switch (todo) {
+        case 'getTransTypes' :
+          var getValidTransTypes = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
+          var getTickers = sqlGen.selectTickers(params).sqlStr + "; ";
+          sqlStr = getValidTransTypes + getTickers;
+          break;
+      }
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.send(results);
+        }
+      });
+
     });
 
   // TEST CALL  //
