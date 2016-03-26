@@ -1,4 +1,5 @@
 var express = require('express');
+var password = require('password-hash-and-salt');
 var app = require("express")();
 //var routes = require('./routes');
 var bodyParser = require('body-parser')
@@ -40,53 +41,83 @@ var userId = 1;
     });
 
     app.post('/index', function (req, res) {
-      var params = req.body.params;
+      var username = req.body.params.username;
+      var pass = req.body.params.password;
       var todo = req.body.todo;
-      var sqlStr;  
+      var sqlStr; 
+ 
+  // Creating hash and salt 
+      password(pass).hash(function(error, hash) {
+        if (error) {
+          throw new Error('Something went wrong!');
+        } 
+        else {
+          var sqlParamsCre = {'username':username,'password':hash};
+          var sqlParamsVal = {'username':username};
 
-      switch(todo) {
-        case 'validate' :
-          sqlStr = sqlGen.execSP('validate_login',params,2).sqlStr;
-          conn.query(sqlStr, function (err, results) {
-            if (err) {
-              console.log("Tried: "+sqlStr);
-              console.log("Got: "+err)
-            } 
-            else {
-              console.log("Success: "+sqlStr);
-              console.log(results[1]);
-              var succ = results[1][0]['@o1'];
-              var id = results[1][0]['@o2'];
-              console.log("Succ is "+succ);
-              res.send(JSON.stringify({'success':succ}));
-              if (succ == 0 ) {
-                userId = id;
-              }
-            }
-          });
-          break;
-        case 'create' :
-          sqlStr = sqlGen.execSP('insert_user',params,2).sqlStr;
-          conn.query(sqlStr, function (err, results) {
-            if (err) {
-              console.log("Tried: "+sqlStr);
-              console.log("Got: "+err)
-            } 
-            else {
-              console.log("Success: "+sqlStr);
-              console.log(results[1]);
-              var succ = results[1][0]['@o1'];
-              var id = results[1][0]['@o2'];
-              console.log("Succ is "+succ);
-              res.send(JSON.stringify({'success':succ}));
-              if (succ == 0 ) {
-                userId = id;
-              }
-            }
-          });
-          break;
-      }
-      
+          switch(todo) {
+            case 'validate' :
+              sqlStr = sqlGen.execSP('validate_login',sqlParamsVal,3).sqlStr;
+              conn.query(sqlStr, function (err, results) {
+                if (err) {
+                  console.log("Tried: "+sqlStr);
+                  console.log("Got: "+err)
+                } 
+                else {
+                  var hashReturn = results[1][0]['@o2'];
+                  var dbSucc = results[1][0]['@o1'];
+                  var succ = 0;
+                  if (dbSucc ==0){
+                    password(pass).verifyAgainst(hashReturn, function(error, verified) {
+                      if(error){
+                        throw new Error('Something went wrong!');
+                      }
+                      if(!verified){
+                        succ = -3;
+                        console.log("Failed password");
+                      }
+                      else{
+                        succ = 0;
+                        console.log("Password correct");
+                      }
+                      var id = results[1][0]['@o3'];
+                      res.send(JSON.stringify({'success':succ}));
+                      if (succ == 0 ) {
+                        userId = id;
+                      }
+                    });
+                  }
+                  else {
+                    succ = dbSucc;
+                    var id = results[1][0]['@o3'];
+                    res.send(JSON.stringify({'success':succ}));
+                    if (succ == 0 ) {
+                      userId = id;
+                    }
+                  }
+                }
+              });
+              break;
+            case 'create' :
+              sqlStr = sqlGen.execSP('insert_user',sqlParamsCre,2).sqlStr;
+              conn.query(sqlStr, function (err, results) {
+                if (err) {
+                  console.log("Tried: "+sqlStr);
+                  console.log("Got: "+err)
+                } 
+                else {
+                  var succ = results[1][0]['@o1'];
+                  var id = results[1][0]['@o2'];
+                  res.send(JSON.stringify({'success':succ}));
+                  if (succ == 0 ) {
+                    userId = id;
+                  }
+                }
+              });
+              break;
+          }
+        }
+      });
     });
 
   //  DATA MGMT PAGE   //
@@ -208,6 +239,9 @@ var userId = 1;
           break;
         case 'getTickerDetails' :
           sqlStr = sqlGen.selectTickers(params).sqlStr + "; ";
+          break;
+        case 'insertTrans' :
+          sqlStr = sqlGen.insertTrans(params).sqlStr + "; ";
           break;
       }
 
