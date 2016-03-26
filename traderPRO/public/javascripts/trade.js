@@ -24,11 +24,11 @@ $(document).ready( function () {
 		if (assetClassId == 1) {
 			$('#add-trans-field-transPrice input').val(1);
 			$('#add-trans-field-transPrice').hide();
-			$('#add-trans-field-transPrice').attr('step',0.01);
+			$('#add-trans-field-transAmt').attr('step',0.01);
 		} else {
 			$('#add-trans-field-transPrice input').val(null);
 			$('#add-trans-field-transPrice').show();
-			$('#add-trans-field-transPrice').attr('step',1);
+			$('#add-trans-field-transAmt').attr('step',1);
 		}
 
 		var data = JSON.stringify({
@@ -70,11 +70,11 @@ $(document).ready( function () {
 		var transAmt = $('#add-trans-field-transAmt input').val();
 		var tickerId = $('#add-trans-field-ticker select').val();
 
-		transConfirm(transTypeId,transType,tranDate,transPrice,transAmt,tickerId,accountId);
+		transConfirm(transTypeId,transType,tranDate,transPrice,transAmt,tickerId,accountId,'insert');
 
 	});
 
-	function transConfirm (typeId,type,date,price,amt,ticker,account) {
+	function transConfirm (typeId,type,date,price,amt,ticker,account,action) {
 		var dialog = $('#trans-confirm');
 
 		var data = JSON.stringify({
@@ -120,8 +120,8 @@ $(document).ready( function () {
 				}
 				dialog.dialog({
 					buttons : {
-						'Enter Transaction' : function () {
-						
+						'Submit Transaction' : function () {
+							submitTrans(typeId,date,price,amt,ticker,account,action);
 						}, 
 						Cancel : function () {
 							clearTransactionForm();
@@ -134,8 +134,37 @@ $(document).ready( function () {
 					}
 				});
 			}
-		});		
+		});
 
+		function submitTrans(typeId,date,price,amt,ticker,account,action) {
+			switch (action) {
+				case 'insert' :
+					data = JSON.stringify({
+						'todo' : 'insertTrans',
+						'params' : {
+							'transTypeId' : typeId,
+							'transDate' : date,
+							'transPrice' : price,
+							'transAmt' : amt,
+							'tickerId' : ticker,
+							'accountId' : account
+						}
+					});	
+					break;
+			}
+			console.log(data);
+			$.ajax('trade',{
+				type : 'POST',
+				contentType : 'application/json',
+				dataType : 'JSON',
+				data : data,
+				success : function (results) {
+					clearTransactionForm();
+					$('#trans-confirm').dialog('close').empty();
+				}
+
+			});
+		};		
 	}
 
 });

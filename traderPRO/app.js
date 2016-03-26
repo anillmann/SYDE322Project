@@ -195,6 +195,9 @@ var userId = 1;
         case 'getTickerDetails' :
           sqlStr = sqlGen.selectTickers(params).sqlStr + "; ";
           break;
+        case 'insertTrans' :
+          sqlStr = sqlGen.insertTrans(params).sqlStr + "; ";
+          break;
       }
 
       conn.query(sqlStr, function (err, results) {
