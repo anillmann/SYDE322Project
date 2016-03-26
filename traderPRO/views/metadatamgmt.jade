@@ -11,10 +11,10 @@ block mainContainer
 		div(id='add-company')
 			form(name='add-company-form', action="/addcomp_submit", method="post")
 				fieldset
-					div
+					div(id='add-company-field-companyName')
 						label(for='companyName') Company Name:
 						input(type="text", name="companyName")
-					div
+					div(id='add-company-field-marketCap')
 						label(for='marketCap') Market Capitalization:
 						input(type="number", name="marketCap")
 					div(id='add-company-field-sector')
@@ -27,7 +27,8 @@ block mainContainer
 						label(for='industry') Industry:
 						select(type="text", name="industry")
 							option(selected='selected' disabled) Select industry
-
+					div
+						input(type='button', value='Add Company', id='add-company-submit')
 	div.formBox
 		h4 Add new ticker
 		div(id='add_ticker')

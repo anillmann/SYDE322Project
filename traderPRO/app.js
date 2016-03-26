@@ -47,26 +47,46 @@ var userId = 1;
       switch(todo) {
         case 'validate' :
           sqlStr = sqlGen.execSP('validate_login',params,2).sqlStr;
+          conn.query(sqlStr, function (err, results) {
+            if (err) {
+              console.log("Tried: "+sqlStr);
+              console.log("Got: "+err)
+            } 
+            else {
+              console.log("Success: "+sqlStr);
+              console.log(results[1]);
+              var succ = results[1][0]['@o1'];
+              var id = results[1][0]['@o2'];
+              console.log("Succ is "+succ);
+              res.send(JSON.stringify({'success':succ}));
+              if (succ == 0 ) {
+                userId = id;
+              }
+            }
+          });
           break;
         case 'create' :
           sqlStr = sqlGen.execSP('insert_user',params,2).sqlStr;
+          conn.query(sqlStr, function (err, results) {
+            if (err) {
+              console.log("Tried: "+sqlStr);
+              console.log("Got: "+err)
+            } 
+            else {
+              console.log("Success: "+sqlStr);
+              console.log(results[1]);
+              var succ = results[1][0]['@o1'];
+              var id = results[1][0]['@o2'];
+              console.log("Succ is "+succ);
+              res.send(JSON.stringify({'success':succ}));
+              if (succ == 0 ) {
+                userId = id;
+              }
+            }
+          });
           break;
       }
-      conn.query(sqlStr, function (err, results) {
-        if (err) {
-          console.log("Tried: "+sqlStr);
-          console.log("Got: "+err)
-        } else {
-          console.log("Success: "+sqlStr);
-          console.log(results[1]);
-          var succ = results[1][0]['@o1'];
-          var id = results[1][0]['@o2'];
-          res.send(succ);
-          if (succ == 0 ) {
-            userId = id;
-          }
-        }
-      });
+      
     });
 
   //  DATA MGMT PAGE   //
@@ -112,24 +132,30 @@ var userId = 1;
     app.post('/metadatamgmt', function (req, res) {
       var todo = req.body.todo;
       var sqlStr;
+      var sqlParams = req.body.sqlParams;
+
+      console.log(sqlParams);
+      
       switch (todo) {
         case 'getIndustries' :
-          var sqlParams = req.body.sqlParams;
-          console.log(sqlParams);
           var getIndustries = sqlGen.selectIndustry(sqlParams).sqlStr;
           sqlStr = getIndustries;
-          conn.query(sqlStr, function (err, results) {
-            if (err) {
-              console.log("Tried: "+sqlStr);
-              console.log("Got: "+err)
-            } else {
-              console.log("Success: "+sqlStr);
-              //console.log(results);
-              res.send(results);
-            }
-          }); 
           break;
-      }
+        
+        case 'addCompany' :
+          sqlStr = sqlGen.execSP('add_company',sqlParams,1).sqlStr;
+          break;
+        }
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          console.log("Results " +results);
+          res.send(results);
+        }
+      }); 
     });
 
     app.get('/trade', function (req, res) {
