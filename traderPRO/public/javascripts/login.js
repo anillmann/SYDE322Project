@@ -11,20 +11,31 @@
                 'password' : password
             }
         })
+        writeAjax(data);
+    });
 
+    function writeErr(errMsg) {
+        $('#login-form .error').empty();
+        $('#login-form .error').html('<p style= "color:red">'+errMsg+'</p>');
+        $('#login-form .error p').fadeOut( 2000);
+    }
+
+    function writeAjax(data){
         $.ajax('index',{
             type : 'POST',
             contentType : 'application/json',
             dataType : 'JSON',
             data : data,
             success : function (results) {
-                if (results) {
-                    console.log("Validated");
+                var succCode = results.success;
+                if (succCode < 0) {
+                    writeErr(errCheck(succCode));
                 }
             }
         });
+    }
 
-    });
+
     $('#createUser-submit').click( function () {
         var username = $('#login-field-username input').val();
         var password = $('#login-field-password input').val();
@@ -36,19 +47,6 @@
                 'password' : password
             }
         })
-
-        $.ajax('index',{
-            type : 'POST',
-            contentType : 'application/json',
-            dataType : 'JSON',
-            data : data,
-            success : function (results) {
-                if (results) {
-                    console.log(results);
-                }
-            }
-        });
-
+        writeAjax(data);
     });
-
 });
