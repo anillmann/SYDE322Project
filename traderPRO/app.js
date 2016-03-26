@@ -132,24 +132,30 @@ var userId = 1;
     app.post('/metadatamgmt', function (req, res) {
       var todo = req.body.todo;
       var sqlStr;
+      var sqlParams = req.body.sqlParams;
+
+      console.log(sqlParams);
+      
       switch (todo) {
         case 'getIndustries' :
-          var sqlParams = req.body.sqlParams;
-          console.log(sqlParams);
           var getIndustries = sqlGen.selectIndustry(sqlParams).sqlStr;
           sqlStr = getIndustries;
-          conn.query(sqlStr, function (err, results) {
-            if (err) {
-              console.log("Tried: "+sqlStr);
-              console.log("Got: "+err)
-            } else {
-              console.log("Success: "+sqlStr);
-              //console.log(results);
-              res.send(results);
-            }
-          }); 
           break;
-      }
+        
+        case 'addCompany' :
+          sqlStr = sqlGen.execSP('add_company',sqlParams,1).sqlStr;
+          break;
+        }
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          console.log("Results " +results);
+          res.send(results);
+        }
+      }); 
     });
 
     app.get('/trade', function (req, res) {

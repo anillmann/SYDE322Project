@@ -33,7 +33,7 @@ $(document).ready( function() {
 		// update industry list when sector updated
 	$('#update-company-field-sector').change( function () {
 		var sectorId = $('#update-company-field-sector select').val();
-		var sqlParams = JSON.stringify({
+		var data = JSON.stringify({
 			'todo' : 'getIndustries',
 			'sqlParams' : {
 				'sectorId' : sectorId
@@ -44,7 +44,7 @@ $(document).ready( function() {
 			type : 'POST',
 			contentType : 'application/json',
 			dataType : 'JSON',
-			data : sqlParams,
+			data : data,
 			success : function (results) {
 				var industry = [], industries = [];
 				for (x in results) {
@@ -57,6 +57,35 @@ $(document).ready( function() {
 			}
 		});
 	});
+
+	$('#add-company-submit').click( function () {
+        var companyName = $('#add-company-field-companyName input').val();
+        var marketCap = $('#add-company-field-marketCap input').val();
+        var industryId = $('#add-company-field-industry select').val();
+
+        var data = JSON.stringify({
+            'todo' : 'addCompany', 
+            'sqlParams' : {
+                'companyName' : companyName, 
+                'marketCap' : marketCap,
+                'industryId' : industryId 
+            }
+        })
+
+        $.ajax('metadatamgmt',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                if (results) {
+                    console.log("New Company Added");
+                    location.reload();
+                }
+            }
+        });
+
+    });
 
 
 });
