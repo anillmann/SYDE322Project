@@ -18,5 +18,8 @@ function errCheck(code) {
 		case -2 :
 			return "SQL Error. Value already exisits."
 			break;
+		case -3 :
+			return "SQL Error. Invalid data."
+			break;
 	}
 }

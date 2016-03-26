@@ -63,29 +63,67 @@ block mainContainer
 								option(value=currency.currencyId) #{currency.currencyCode}
 					div
 						input(type='button', value='Add Ticker', id='add-ticker-submit')
-	h4 Update Existing Company
-	div.paramBox
-		h4 Select Company
-			div
-				select(type="text", name="company")
-					option(selected='selected' disabled) Select company
-					each company in companies 
-						option(value=company.companyId) #{company.companyName}
-
 	div.formBox
-		h4 Update Company Information
-			fieldset
-				div
-					label(for='marketCap') Market Capitalization:
-					input(type="number", name="marketCap")
-				div(id='update-company-field-sector')
-					label(for='sector') Sector:
-					select(type="text", name="sector")
-						option(selected='selected' disabled) Select sector
-						each sector in sectors 
-							option(value=sector.sectorId) #{sector.sector}
-				div(id='update-company-field-industry')
-					label(for='industry') Industry:
-					select(type="text", name="industry")
-						option(selected='selected' disabled) Select industry
-
+		h4 Update Existing Company 
+		div(id='update-company')
+			form(id='update-company-form')
+				fieldset
+					div(id='select-company-field-companyName')
+					select(type="text", name="company" id="update-company-select-company")
+						option(selected='selected' disabled) Select company to update
+						each company in companies 
+							option(value=company.companyId) #{company.companyName}
+					div
+						label(for='companyName') Update Company Name:
+						input(type="text", name="companyName", id="update-company-name")					
+					div(id='update-company-field-marketCap')
+						label(for='marketCap') Update Market Capitalization:
+						input(type="number", name="marketCap", id="update-company-marketCap")
+					//- div(id='update-company-field-sector')
+					//- 	label(for='sector') Sector:
+					//- 	select(type="text", name="sector")
+					//- 		option(selected='selected' disabled) Select sector
+					//- 		each sector in sectors 
+					//- 			option(value=sector.sectorId) #{sector.sector}
+					div(id='update-company-field-industry')
+						label(for='industry') Update Industry:
+						select(type="text", name="industry" id='update-company-industry')
+							option(selected='selected' disabled) Select industry
+							each industry in industries 
+								option(value=industry.industryId) #{industry.industry}
+					div
+						input(type='button', value='Update Company', id='update-company-submit')
+	div.formBox
+		h4 Update Existing Ticker
+		div(id='update-ticker')
+			form(id='update-ticker-form')
+				fieldset
+					div(id='update-ticker-field-companyName')
+						label(for='companyName') Company Name:
+						select(type="text", name="companyName")
+							option(selected='selected' disabled) Select company
+							each company in companies 
+								option(value=company.companyId) #{company.companyName}
+					div(id='add-ticker-field-symbol')
+						label(for='symbol') Ticker Symbol:
+						input(type="text", name="symbol")
+					div(id='add-ticker-field-assetClass')
+						label(for='assetClass') Asset Class:
+						select(type="text", name="assetClass")
+							option(selected='selected' disabled) Select asset class
+							each assetClass in assetClasses 
+								option(value=assetClass.assetClassId) #{assetClass.assetClass}
+					div(id='add-ticker-field-country')
+						label(for='country') Country:
+						select(type="text", name="country")
+							option(selected='selected' disabled) Select country
+							each country in countries 
+								option(value=country.countryId) #{country.country}
+					div(id='add-ticker-field-currency')
+						label(for='currency') Currency:
+						select(type="text", name="currency")
+							option(selected='selected' disabled) Select currency
+							each currency in currencies 
+								option(value=currency.currencyId) #{currency.currencyCode}
+					div
+						input(type='button', value='Add Ticker', id='add-ticker-submit')
