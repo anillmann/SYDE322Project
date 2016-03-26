@@ -9,7 +9,7 @@ block mainContainer
 	div.formBox
 		h4 Add new company 
 		div(id='add-company')
-			form(name='add-company-form', action="/addcomp_submit", method="post")
+			form(id='add-company-form')
 				fieldset
 					div(id='add-company-field-companyName')
 						label(for='companyName') Company Name:
@@ -31,37 +31,38 @@ block mainContainer
 						input(type='button', value='Add Company', id='add-company-submit')
 	div.formBox
 		h4 Add new ticker
-		div(id='add_ticker')
-			form(name='add_tick_form', action="/addtick_submit", method="post")
+		div(id='add-ticker')
+			form(id='add-ticker-form')
 				fieldset
-					div
+					div(id='add-ticker-field-companyName')
 						label(for='companyName') Company Name:
 						select(type="text", name="companyName")
 							option(selected='selected' disabled) Select company
 							each company in companies 
-								option(val=company.companyId) #{company.company}
-					div
-						label(for='tickSymbol') Ticker Symbol:
-						input(type="text", name="tickSymbol")
-					div
+								option(value=company.companyId) #{company.companyName}
+					div(id='add-ticker-field-symbol')
+						label(for='symbol') Ticker Symbol:
+						input(type="text", name="symbol")
+					div(id='add-ticker-field-assetClass')
 						label(for='assetClass') Asset Class:
 						select(type="text", name="assetClass")
 							option(selected='selected' disabled) Select asset class
 							each assetClass in assetClasses 
-								option(val=assetClass.assetClassId) #{assetClass.assetClass}
-					div
+								option(value=assetClass.assetClassId) #{assetClass.assetClass}
+					div(id='add-ticker-field-country')
 						label(for='country') Country:
 						select(type="text", name="country")
 							option(selected='selected' disabled) Select country
 							each country in countries 
-								option(val=country.countryId) #{country.country}
-					div
+								option(value=country.countryId) #{country.country}
+					div(id='add-ticker-field-currency')
 						label(for='currency') Currency:
 						select(type="text", name="currency")
 							option(selected='selected' disabled) Select currency
 							each currency in currencies 
-								option(val=currency.currencyId) #{currency.currencyCode}					
-
+								option(value=currency.currencyId) #{currency.currencyCode}
+					div
+						input(type='button', value='Add Ticker', id='add-ticker-submit')
 	h4 Update Existing Company
 	div.paramBox
 		h4 Select Company

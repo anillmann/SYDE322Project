@@ -41,6 +41,10 @@ exports.sqlQuery = function () {
 		var sql = new execSP(sp,input_params,output_params);
 		return sql;
 	}
+	this.insertTrans = function (params) {
+		var sql = new insertTrans(params);
+		return sql;
+	}
 }
 
 var selectCountry = function () {
@@ -85,6 +89,7 @@ var selectValidTransTypes = function (params) {
 var selectTickers = function (params) {
 	var qry = squel.select().from("v_tickers");
 	if (params.assetClassId) { qry.where("assetClassId="+params.assetClassId); }
+	if (params.tickerId) { qry.where("tickerId="+params.tickerId); }
 	this.sqlStr = qry.toString();
 }
 
@@ -110,3 +115,25 @@ var execSP = function (sp,input_params,output_params) {
     this.sqlStr = str.toString();
 }
 
+var insertTrans = function(params) {
+	var transTypeId = params.transTypeId;
+	var transDate = params.transDate;
+	var transPrice = params.transPrice;
+	var transAmt = params.transAmt;
+	var tickerId = params.tickerId;
+	var accountId = params.accountId;
+	this.sqlStr = squel.insert().into("trans")
+							.set("transTypeId",transTypeId)
+							.set("transDate",procDate(transDate))
+							.set("transPrice",transPrice)
+							.set("transAmt",transAmt)
+							.set("accountId",accountId)
+							.set("tickerId",tickerId).toString();
+}
+
+function procDate (str) {
+	var d;
+	d = new Date(str);
+	var month = d.getMonth() + 1;
+	return d.getFullYear()+'-'+month+'-'+d.getDate();
+}

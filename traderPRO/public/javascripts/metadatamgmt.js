@@ -86,6 +86,37 @@ $(document).ready( function() {
         });
 
     });
+	$('#add-ticker-submit').click( function () {
+        var symbol = $('#add-ticker-field-symbol input').val();
+        var assetClassId = $('#add-ticker-field-assetClass select').val();
+        var countryId = $('#add-ticker-field-country select').val();
+        var currencyId = $('#add-ticker-field-currency select').val();
+        var companyId = $('#add-ticker-field-companyName select').val();
 
+        var data = JSON.stringify({
+            'todo' : 'addTicker', 
+            'sqlParams' : {
+                'symbol' : symbol,
+                'assetClassId' : assetClassId,
+                'countryId' : countryId,
+                'currencyId' : currencyId, 
+                'companyId' : companyId 
+            }
+        });
+
+        $.ajax('metadatamgmt',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                if (results) {
+                    console.log("New Ticker Added");
+                    location.reload();
+                }
+            }
+        });
+
+    });
 
 });

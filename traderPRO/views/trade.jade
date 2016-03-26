@@ -33,3 +33,21 @@ block mainContainer
 							div(id='add-trans-field-transDate')
 								label(for='transDate') Transaction Date:
 								input(type='text', name='transDate').date-field
+							div(id='add-trans-field-transPrice')
+								label(for='transAmt') Price
+								input(type='number', name='transPrice', min=0, step=0.01)
+							div(id='add-trans-field-transAmt')
+								label(for='transAmt') Amount:
+								input(type='number', name='transAmt', min=0)
+							div(id='add-trans-submit')
+								input(type='button', value="Enter Transaction")
+
+		div.formBox
+			h4 Ammend Transaction
+
+		div.formBox
+			h4 Get Recent Transactions
+
+
+	div(id='trans-confirm').hidden
+

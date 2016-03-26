@@ -176,6 +176,10 @@ var userId = 1;
         case 'addCompany' :
           sqlStr = sqlGen.execSP('add_company',sqlParams,1).sqlStr;
           break;
+
+        case 'addTicker' :
+          sqlStr = sqlGen.execSP('add_ticker',sqlParams,1).sqlStr;
+          break;
         }
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -183,7 +187,7 @@ var userId = 1;
           console.log("Got: "+err)
         } else {
           console.log("Success: "+sqlStr);
-          console.log("Results " +results);
+          console.log("Results " +results[0]);
           res.send(results);
         }
       }); 
@@ -210,6 +214,38 @@ var userId = 1;
           });
         }
       });
+    });
+
+    app.post('/trade', function (req, res) {
+      var todo = req.body.todo;
+      var params = req.body.params;
+      var sqlStr;
+
+      switch (todo) {
+        case 'getTransTypes' :
+          var getValidTransTypes = sqlGen.selectValidTransTypes(params).sqlStr + "; ";
+          var getTickers = sqlGen.selectTickers(params).sqlStr + "; ";
+          sqlStr = getValidTransTypes + getTickers;
+          break;
+        case 'getTickerDetails' :
+          sqlStr = sqlGen.selectTickers(params).sqlStr + "; ";
+          break;
+        case 'insertTrans' :
+          sqlStr = sqlGen.insertTrans(params).sqlStr + "; ";
+          break;
+      }
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.send(results);
+        }
+      });
+
     });
 
   // TEST CALL  //
