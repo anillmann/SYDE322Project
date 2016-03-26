@@ -145,6 +145,10 @@ var userId = 1;
         case 'addCompany' :
           sqlStr = sqlGen.execSP('add_company',sqlParams,1).sqlStr;
           break;
+
+        case 'addTicker' :
+          sqlStr = sqlGen.execSP('add_ticker',sqlParams,1).sqlStr;
+          break;
         }
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -152,7 +156,7 @@ var userId = 1;
           console.log("Got: "+err)
         } else {
           console.log("Success: "+sqlStr);
-          console.log("Results " +results);
+          console.log("Results " +results[0]);
           res.send(results);
         }
       }); 
