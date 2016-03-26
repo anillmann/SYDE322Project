@@ -142,6 +142,7 @@ $(document).ready( function() {
 				$('#update-company-marketCap').val(marketCap);
 				$('#update-company-industry').val(industry);
 
+				$('#update-company-form .hidden').show();
 			}
 		});
 	});
@@ -169,6 +170,134 @@ $(document).ready( function() {
             success : function (results) {
                 if (results) {
                     console.log("Company Updated");
+                    location.reload();
+                }
+            }
+        });
+
+    });
+  	$('#add-ticker-submit').click( function () {
+        var symbol = $('#add-ticker-field-symbol input').val();
+        var assetClassId = $('#add-ticker-field-assetClass select').val();
+        var countryId = $('#add-ticker-field-country select').val();
+        var currencyId = $('#add-ticker-field-currency select').val();
+        var companyId = $('#add-ticker-field-companyName select').val();
+
+        var data = JSON.stringify({
+            'todo' : 'addTicker', 
+            'sqlParams' : {
+                'symbol' : symbol,
+                'assetClassId' : assetClassId,
+                'countryId' : countryId,
+                'currencyId' : currencyId, 
+                'companyId' : companyId 
+            }
+        });
+
+        $.ajax('metadatamgmt',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                if (results) {
+                    console.log("New Ticker Added");
+                    location.reload();
+                }
+            }
+        });
+
+    });
+	$('#select-ticker-field-country').change( function () {
+		var countryId = $(this).val();
+		
+		var data = JSON.stringify({
+			'todo' : 'getCountryTickers',
+			'sqlParams' : {
+				'countryId' : countryId
+			}
+		});	
+
+		$.ajax('metadatamgmt',{
+			type : 'POST',
+			contentType : 'application/json',
+			dataType : 'JSON',
+			data : data,
+			success : function (results) {
+				var ticker = [], tickers = [];
+				for (x in results) {
+					ticker= [results[x].tickerId, results[x].symbol];
+					tickers.push(ticker);
+				}
+				var tickerSelect = $('#select-ticker-field-symbol select');
+				appendList(tickerSelect,'option',tickers);
+				$('#select-ticker-field-symbol').show();
+
+			}
+		});
+	});
+	$('#ticker-select-symbol').change( function () {
+		var tickerId = $(this).val();
+		
+		var data = JSON.stringify({
+			'todo' : 'getTickerData',
+			'sqlParams' : {
+				'tickerId' : tickerId
+			}
+		});	
+
+		$.ajax('metadatamgmt',{
+			type : 'POST',
+			contentType : 'application/json',
+			dataType : 'JSON',
+			data : data,
+			success : function (results) {
+				console.log(results);
+				var symbol = results[0].symbol;
+				var assetClassId =results[0].assetClassId;
+				var country = results[0].countryId;
+				var company = results[0].companyId;
+				var currency = results[0].currencyId
+
+				$('#update-ticker-select-country').val(country);
+				$('#update-ticker-symbol').val(symbol);
+				$('#update-ticker-assetClass-select').val(assetClassId);
+				$('#update-ticker-select-company').val(company);
+				$('#update-ticker-currency-select').val(currency);
+
+				$('#update-ticker-form').show();
+
+			}
+		});
+	});
+	$('#update-ticker-submit').click( function () {
+        var tickerId = $('#ticker-select-symbol').val();
+        var symbol = $('#update-ticker-symbol').val();
+        var assetClassId = $('#update-ticker-assetClass-select').val();
+        var countryId = $('#update-ticker-select-country').val();
+        var currencyId = $('#update-ticker-currency-select').val();
+        var companyId = $('#update-ticker-select-company').val();
+
+        var data = JSON.stringify({
+            'todo' : 'updateTicker', 
+            'sqlParams' : {
+                'tickerId' : tickerId,
+                'symbol' : symbol,
+                'assetClassId' : assetClassId,
+                'countryId' : countryId,
+                'currencyId' : currencyId, 
+                'companyId' : companyId 
+            }
+        });
+
+        $.ajax('metadatamgmt',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                if (results) {
+                    console.log("New Ticker Added");
                     location.reload();
                 }
             }

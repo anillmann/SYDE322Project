@@ -92,7 +92,11 @@ var selectValidTransTypes = function (params) {
 
 var selectTickers = function (params) {
 	var qry = squel.select().from("v_tickers");
-	if (params.assetClassId) { qry.where("assetClassId="+params.assetClassId); }
+	if (params) {
+		if (params.assetClassId) { qry.where("assetClassId="+params.assetClassId); }
+		if (params.countryId) { qry.where("countryId="+params.countryId); }
+		if (params.tickerId) { qry.where("tickerId="+params.tickerId); }
+	}
 	this.sqlStr = qry.toString();
 }
 

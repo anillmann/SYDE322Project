@@ -137,10 +137,11 @@ var userId = 1;
       var getCompanies = sqlGen.selectCompany().sqlStr + "; ";
       var getCountries = sqlGen.selectCountry().sqlStr + "; ";
       var getIndustries = sqlGen.selectIndustry().sqlStr + "; ";
+      var getTickers = sqlGen.selectTickers().sqlStr + "; ";
 
       console.log(getCurrencies);
 
-      var sqlStr = getSectors + getCurrencies + getAssetClasses + getCompanies + getCountries + getIndustries;
+      var sqlStr = getSectors + getCurrencies + getAssetClasses + getCompanies + getCountries + getIndustries + getTickers;
       
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -156,7 +157,8 @@ var userId = 1;
             assetClasses : results[2],
             companies : results[3],
             countries : results[4],
-            industries : results[5]
+            industries : results[5],
+            tickers : results[6]
           });
         }
       });       
@@ -189,6 +191,15 @@ var userId = 1;
 
         case 'updateCompany' :
           sqlStr = sqlGen.execSP('update_company',sqlParams,1).sqlStr;
+          break;
+        case 'getCountryTickers' :
+          sqlStr = sqlGen.selectTickers(sqlParams).sqlStr;
+          break;
+        case 'getTickerData' :
+          sqlStr = sqlGen.selectTickers(sqlParams).sqlStr;
+          break;
+        case 'updateTicker' :
+          sqlStr = sqlGen.execSP('update_ticker',sqlParams,1).sqlStr;
           break;
         }
       conn.query(sqlStr, function (err, results) {
