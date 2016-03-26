@@ -19,7 +19,7 @@
         $('#login-form .error').html('<p style= "color:red">'+errMsg+'</p>');
         $('#login-form .error p').fadeOut( 2000);
     }
-
+    
     function writeAjax(data){
         $.ajax('index',{
             type : 'POST',
