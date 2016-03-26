@@ -19,7 +19,7 @@
         $('#login-form .error').html('<p style= "color:red">'+errMsg+'</p>');
         $('#login-form .error p').fadeOut( 2000);
     }
-    
+
     function writeAjax(data){
         $.ajax('index',{
             type : 'POST',
@@ -30,6 +30,9 @@
                 var succCode = results.success;
                 if (succCode < 0) {
                     writeErr(errCheck(succCode));
+                }
+                if (succCode == 0) {
+                    window.location.replace('http://localhost:3100/metadatamgmt');
                 }
             }
         });
