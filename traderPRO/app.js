@@ -166,6 +166,9 @@ var userId = 1;
           var getTickers = sqlGen.selectTickers(params).sqlStr + "; ";
           sqlStr = getValidTransTypes + getTickers;
           break;
+        case 'getTickerDetails' :
+          sqlStr = sqlGen.selectTickers(params).sqlStr + "; ";
+          break;
       }
 
       conn.query(sqlStr, function (err, results) {
