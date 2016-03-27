@@ -2,6 +2,8 @@ var accountId = null;
 
 $(document).ready( function () {
 
+	$('#get-trans-form').dynatable();
+
 	$('.hidden-before-param').hide();
 	$('.hidden').hide();
 	$('.date-field').datepicker();
