@@ -3,9 +3,7 @@ block headScripts
 	script(src='/javascripts/metadatamgmt.js')
 
 block mainContainer
-	p This is the metadata mgmt page
-
-	
+	h3 Metadata Management
 	div.formBox
 		h4 Add new company 
 		div(id='add-company')
@@ -34,35 +32,36 @@ block mainContainer
 		div(id='add-ticker')
 			form(id='add-ticker-form')
 				fieldset
-					div(id='add-ticker-field-symbol')
-						label(for='symbol') Ticker Symbol:
-						input(type="text", name="symbol")
-					div(id='add-ticker-field-companyName')
-						label(for='companyName') Company Name:
-						select(type="text", name="companyName")
-							option(selected='selected' disabled) Select company
-							each company in companies 
-								option(value=company.companyId) #{company.companyName}
 					div(id='add-ticker-field-assetClass')
 						label(for='assetClass') Asset Class:
-						select(type="text", name="assetClass")
+						select(type="text", name="assetClass" id='add-ticker-select-assetClass' )
 							option(selected='selected' disabled) Select asset class
 							each assetClass in assetClasses 
 								option(value=assetClass.assetClassId) #{assetClass.assetClass}
-					div(id='add-ticker-field-country')
-						label(for='country') Country:
-						select(type="text", name="country")
-							option(selected='selected' disabled) Select country
-							each country in countries 
-								option(value=country.countryId) #{country.country}
-					div(id='add-ticker-field-currency')
-						label(for='currency') Currency:
-						select(type="text", name="currency")
-							option(selected='selected' disabled) Select currency
-							each currency in currencies 
-								option(value=currency.currencyId) #{currency.currencyCode}
-					div
-						input(type='button', value='Add Ticker', id='add-ticker-submit')
+					div.hidden								
+						div(id='add-ticker-field-symbol')
+							label(for='symbol') Ticker Symbol:
+							input(type="text", name="symbol")
+						div(id='add-ticker-field-companyName')
+							label(for='companyName') Company Name:
+							select(type="text", name="companyName")
+								option(selected='selected' disabled) Select company
+								each company in companies 
+									option(value=company.companyId) #{company.companyName}
+						div(id='add-ticker-field-country')
+							label(for='country') Country:
+							select(type="text", name="country")
+								option(selected='selected' disabled) Select country
+								each country in countries 
+									option(value=country.countryId) #{country.country}
+						div(id='add-ticker-field-currency')
+							label(for='currency') Currency:
+							select(type="text", name="currency")
+								option(selected='selected' disabled) Select currency
+								each currency in currencies 
+									option(value=currency.currencyId) #{currency.currencyCode}
+						div
+							input(type='button', value='Add Ticker', id='add-ticker-submit')
 	div.formBox
 		h4 Update Existing Company 
 		div(id='update-company')
@@ -118,20 +117,20 @@ block mainContainer
 							each country in countries 
 								option(value=country.countryId) #{country.country}
 					div(id='update-ticker-field-symbol')
-						label(for='symbol') Update ticker symbol:
+						label(for='symbol') Update Ticker symbol:
 						input(type="text", name="symbol", id="update-ticker-symbol")			
-					div(id='update-ticker-field-company')
-						label(for='companyName') Update Ticker Company:
-						select(type="text", name="companyName", id='update-ticker-select-company' )
-							option(selected='selected' disabled) Select company
-							each company in companies 
-								option(value=company.companyId) #{company.companyName}
 					div(id='update-ticker-field-assetClass')
 						label(for='assetClass') Update Ticker Asset Class:
 						select(type="text", name="assetClass" id='update-ticker-assetClass-select')
 							option(selected='selected' disabled) Select asset class
 							each assetClass in assetClasses 
 								option(value=assetClass.assetClassId) #{assetClass.assetClass}
+					div(id='update-ticker-field-company').hidden
+						label(for='companyName') Update Ticker Company:
+						select(type="text", name="companyName", id='update-ticker-select-company' )
+							option(selected='selected' disabled) Select company
+							each company in companies 
+								option(value=company.companyId) #{company.companyName}
 					div(id='update-ticker-field-currency')
 						label(for='currency') Update Ticker Currency:
 						select(type="text", name="currency" id='update-ticker-currency-select')

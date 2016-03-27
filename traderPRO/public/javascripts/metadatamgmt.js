@@ -86,6 +86,19 @@ $(document).ready( function() {
         });
 
     });
+	$('#add-ticker-select-assetClass').change( function () {
+		var assetClassId = $('#add-ticker-select-assetClass').val();
+		
+		$('#add-ticker-form .hidden').show();
+
+		if (assetClassId == 1) {
+			$('#add-ticker-field-companyName').hide();
+		}
+		else {
+			$('#add-ticker-field-companyName').show();
+		}
+    });
+
 	$('#add-ticker-submit').click( function () {
         var symbol = $('#add-ticker-field-symbol input').val();
         var assetClassId = $('#add-ticker-field-assetClass select').val();
@@ -267,9 +280,28 @@ $(document).ready( function() {
 
 				$('#update-ticker-form').show();
 
+				if (assetClassId == 1) {
+					$('#update-ticker-field-company').hide();
+				}
+				else {
+					$('#update-ticker-field-company').show();
+				}
+
 			}
 		});
 	});
+	
+	$('#update-ticker-assetClass-select').change( function () {
+		var assetClassId = $('#update-ticker-assetClass-select').val();
+
+		if (assetClassId == 1) {
+			$('#update-ticker-field-company').hide();
+		}
+		else {
+			$('#update-ticker-field-company').show();
+		}
+    });
+
 	$('#update-ticker-submit').click( function () {
         var tickerId = $('#ticker-select-symbol').val();
         var symbol = $('#update-ticker-symbol').val();
