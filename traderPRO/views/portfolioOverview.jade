@@ -1,0 +1,12 @@
+extends layout
+block headScripts
+	script(src='/javascripts/portfolioOverview.js')
+
+block mainContainer
+	div.paramBox
+		h4 Select Account
+			div
+				select(type="text", name="account", id="account-select")
+					option(selected='selected' disabled) Select account
+					each account in accounts 
+						option(value=account.accountId) #{account.accountName}

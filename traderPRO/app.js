@@ -125,14 +125,6 @@ var userId = 1;
       });
     });
 
-  //  DATA MGMT PAGE   //
-    app.get('/datamgmt', function(req, res){
-      console.log('datamgmt GET called');
-      res.render('datamgmt', {
-        title : 'traderPRO - Data Management'
-      });
-    });
-
     // META DATA MGMT
     app.get('/metadatamgmt', function(req, res){
       // queries to get static data
@@ -274,9 +266,10 @@ var userId = 1;
 
     });
 
-  // TEST CALL  //
-    app.post('/datamgmt', function(req, res){
-      console.log('datamgmt POST called');
+    app.get('/portfolioOverview', function(req, res){  
+      res.render('portfolioOverview', {
+        title : 'traderPRO - Portfolio Overview'
+      });    
     });
 
   
