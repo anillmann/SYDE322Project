@@ -1,6 +1,8 @@
 var express = require('express');
 var password = require('password-hash-and-salt');
 var app = require("express")();
+// var cookieParser = require('cookie-parser')
+// var session = require('express-session')
 //var routes = require('./routes');
 var bodyParser = require('body-parser')
 // MySQL connection
@@ -19,6 +21,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
+// app.use(cookieParser());
+// app.use(session);
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -79,6 +83,7 @@ var userId = 1;
                       else{
                         succ = 0;
                         console.log("Password correct");
+                        // req.session.loggedIn;
                       }
                       var id = results[1][0]['@o3'];
                       res.send(JSON.stringify({'success':succ}));
