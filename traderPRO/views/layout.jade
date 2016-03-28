@@ -16,21 +16,23 @@ html
 
 		block headScripts
 
-		body
+	body
 		.container
 			.menubar
 				h1 traderPRO
-#wrap
-	div(class="navbar navbar-inverse")
-		.container
-			div
-				ul(class="nav navbar-nav")
-					li.active
-						a(href="index") Login
-					li
-						a(href="trade") Trade
-					li
-						a(href="metadatamgmt") Metadata Management
+		#wrap
+			div(class="navbar navbar-inverse")
+				.container
+					div
+						ul(class="nav navbar-nav")
+							li.active
+								a(href="index") Login
+							li
+								a(href="portfolioOverview") Portfolio Overview
+							li
+								a(href="trade") Trade
+							li
+								a(href="metadatamgmt") Metadata Managment
 
-			.mainContainer
-				block mainContainer
+					.mainContainer
+						block mainContainer
