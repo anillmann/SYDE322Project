@@ -2,7 +2,7 @@ var accountId = null;
 
 $(document).ready( function () {
 
-	$('#get-trans-form').dynatable();
+	//$('#get-trans-form').dynatable();
 
 	$('.hidden-before-param').hide();
 	$('.hidden').hide();
@@ -10,8 +10,28 @@ $(document).ready( function () {
 
 	$('#account-select').change( function () {
 		accountId = $(this).val();
-		clearTransactionForm();
+
+
+        clearTransactionForm();
 		$('.hidden-before-param').show();
+
+		var sqlParams = JSON.stringify({
+			'todo' : 'getRecentTrans',
+			'sqlParams' : {
+				'accountId' : accountId
+			}
+		});
+
+		$.ajax('trade',{
+			type : 'POST',
+			contentType : 'application/json',
+			dataType : 'JSON',
+			data : sqlParams,
+			success : function(results){
+				//$('#myTable > tbody:last-child').append('<tr><td>...</tr>');
+
+			}
+		});
 	});
 
 	function clearTransactionForm () {

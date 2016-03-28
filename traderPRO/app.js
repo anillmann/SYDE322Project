@@ -223,8 +223,9 @@ var userId = 1;
       var sqlParams = { 'userId' : userId };
       var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
       var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
+      var getRecentTrans = sqlGen.execSP('select_recentTrans',sqlParams,1).sqlStr;
 
-      var sqlStr = getAccounts + getAssetClasses;
+      var sqlStr = getAccounts + getAssetClasses + getRecentTrans;
 
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -236,7 +237,8 @@ var userId = 1;
           res.render('trade', {
             title : 'traderPRO - Trade', 
             accounts : results[0],
-            assetClasses : results[1]
+            assetClasses : results[1],
+            transactions : results[2]
           });
         }
       });
@@ -259,6 +261,8 @@ var userId = 1;
         case 'insertTrans' :
           sqlStr = sqlGen.insertTrans(params).sqlStr + "; ";
           break;
+        case 'getRecentTrans' :
+          sqlStr = sqlGen.selectTrans(params).sqlStr + "; ";
       }
 
       conn.query(sqlStr, function (err, results) {

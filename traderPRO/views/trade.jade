@@ -44,10 +44,30 @@ block mainContainer
 
 		div.formBox
 			h4 Ammend Transaction
-
 		div.formBox
-			h4 Get Recent Transactions
-				form(id='get-trans-form')
+			h4 Recent Transactions
+			table
+				thead
+					tr
+						th ID
+						th Account
+						th Ticker
+						th Type
+						th Date
+						th Price
+						th Amount
+
+				tbody
+					each transaction in transactions
+						tr
+							td #{transaction.transId}
+							td #{transaction.accountName}
+							td #{transaction.symbol}
+							td #{transaction.transType}
+							td #{transaction.transDate}
+							td #{transaction.transPrice}
+							td #{transaction.transAmt}
+
 
 
 	div(id='trans-confirm').hidden

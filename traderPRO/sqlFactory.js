@@ -45,6 +45,10 @@ exports.sqlQuery = function () {
 		var sql = new insertTrans(params);
 		return sql;
 	}
+	this.selectTrans = function (params) {
+		var sql = new selectTrans(params);
+		return sql;
+	}
 }
 
 var selectCountry = function () {
@@ -99,6 +103,15 @@ var selectTickers = function (params) {
 	}
 	this.sqlStr = qry.toString();
 }
+
+ var selectTrans = function (params) {
+ 	var qry = squel.select().from("trans");
+	if (params) {
+		var accountId = params.accountId;
+		qry = qry.where("accountId="+accountId);
+	}
+	this.sqlStr = qry.toString();
+ }
 
 var execSP = function (sp,input_params,output_params) {
 	var str = "CALL ";
