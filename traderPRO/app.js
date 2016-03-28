@@ -267,10 +267,53 @@ var userId = 1;
     });
 
     app.get('/portfolioOverview', function(req, res){  
-      res.render('portfolioOverview', {
-        title : 'traderPRO - Portfolio Overview'
+      var sqlParams = { 'userId' : userId };
+      var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+
+      var sqlStr = getAccounts;
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.render('portfolioOverview', {
+            title : 'traderPRO - Portfolio Overview', 
+            accounts : results
+          });
+        }
       });    
     });
+
+
+    app.post('/portfolioOverview', function (req, res) {
+      var todo = req.body.todo;
+      var params = req.body.params;
+      var sqlStr;
+
+      console.log(params.accountId);
+
+      /*switch (todo) {
+        case '' :
+
+          break;
+      }
+
+      conn.query(sqlStr, function (err, results) {
+        if (err) {
+          console.log("Tried: "+sqlStr);
+          console.log("Got: "+err)
+        } else {
+          console.log("Success: "+sqlStr);
+          //console.log(results);
+          res.send(results);
+        }
+      });*/
+
+    });
+
 
   
 //  Database Calls  //
