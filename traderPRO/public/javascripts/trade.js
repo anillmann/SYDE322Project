@@ -150,7 +150,7 @@ $(document).ready( function () {
             }
         });
 
-        $.ajax('metadatamgmt',{
+        $.ajax('trade',{
             type : 'POST',
             contentType : 'application/json',
             dataType : 'JSON',
