@@ -53,6 +53,10 @@ exports.sqlQuery = function () {
 		var sql = new selectTrans(params);
 		return sql;
 	}
+	this.deleteTrans = function (params) {
+		var sql = new deleteTrans(params);
+		return sql;
+	}
 }
 
 var selectCountry = function () {
@@ -119,6 +123,11 @@ var selectTickers = function (params) {
 		if (params.transId) { qry.where("transId="+params.transId); }
 	}
 	this.sqlStr = qry.toString();
+ }
+
+ var deleteTrans = function (params) {
+ 	var qry = squel.delete().from("trans").where("transId="+params.transId);
+ 	this.sqlStr = qry.toString();
  }
 
 var execSP = function (sp,input_params,output_params) {

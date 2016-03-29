@@ -164,6 +164,30 @@ $(document).ready( function () {
         });
 
     });
+	$('#update-trans-delete').click( function () {
+        var transId = $('#select-trans-select').val();
+
+        var data = JSON.stringify({
+            'todo' : 'deleteTrans', 
+            'params' : {
+                'transId' : transId,
+            }
+        });
+
+        $.ajax('trade',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                if (results) {
+                    console.log("Transaction deleted");
+                    location.reload();
+                }
+            }
+        });
+
+    });
 
 	function transConfirm (typeId,type,date,price,amt,ticker,account,action) {
 		var dialog = $('#trans-confirm');

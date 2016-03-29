@@ -271,6 +271,8 @@ var userId = 1;
         case 'updateTrans' :
           sqlStr = sqlGen.execSP('update_trans',params,1).sqlStr;
           break;
+        case 'deleteTrans' :
+          sqlStr = sqlGen.deleteTrans(params).sqlStr + "; ";
       }
 
       conn.query(sqlStr, function (err, results) {
