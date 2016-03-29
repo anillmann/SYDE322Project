@@ -282,7 +282,8 @@ $(document).ready( function () {
 		headder.append('<td>Amount</td>');
 		headder.append('</th></thead><tbody>');
 
-		var transid, ticker, tt, transDate, price, amt;
+		var transid, ticker, tt, transDate, price, amt; 
+		var transaction = [], transactions = [];
 
 		for (x in results) {
 			transDate = new Date(results[x].transDate);
@@ -303,8 +304,12 @@ $(document).ready( function () {
 			row.append('<td>'+transDate+'</td>');
 			row.append('<td>'+price+'</td>');
 			row.append('<td>'+amt+'</td></tr>');
+
+			transaction = [transid, transid]
+			transactions.push(transaction);
 		}
 			row.append('</tbody');
+			appendList($('#select-trans-select'),'option',transactions);
 
 	}
 
