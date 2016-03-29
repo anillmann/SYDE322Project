@@ -292,6 +292,9 @@ var userId = 1;
         case 'getTrans' :
           sqlStr = sqlGen.selectTrans(params).sqlStr + "; ";
           break;
+        case 'getTransFormat' :
+          sqlStr = sqlGen.selectTransFormat(params).sqlStr + "; ";
+          break;
         case 'updateTrans' :
           sqlStr = sqlGen.execSP('update_trans',params,1).sqlStr;
           break;

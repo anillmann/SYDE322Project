@@ -11,27 +11,12 @@ $(document).ready( function () {
 	$('#account-select').change( function () {
 		accountId = $(this).val();
 
+		getRecentTrans();
 
         clearTransactionForm();
 		$('.hidden-before-param').show();
 
-		// var sqlParams = JSON.stringify({
-		// 	'todo' : 'getRecentTrans',
-		// 	'sqlParams' : {
-		// 		'accountId' : accountId
-		// 	}
-		// });
 
-		// $.ajax('trade',{
-		// 	type : 'POST',
-		// 	contentType : 'application/json',
-		// 	dataType : 'JSON',
-		// 	data : sqlParams,
-		// 	success : function(results){
-		// 		//$('#myTable > tbody:last-child').append('<tr><td>...</tr>');
-
-		// 	}
-		// });
 	});
 
 	function clearTransactionForm () {
@@ -282,4 +267,71 @@ $(document).ready( function () {
 		};		
 	}
 
+
+	function writeRecentTrans (results) {
+		var pnldiv = $('#recent-trans');
+		pnldiv.empty();
+		pnldiv.append('<thead><th>');
+		var headder = $('#recent-trans th');
+
+		headder.append('<td>id</td>');
+		headder.append('<td>Ticker</td>');
+		headder.append('<td>Transaction Type</td>');
+		headder.append('<td>Date</td>');
+		headder.append('<td>Price</td>');
+		headder.append('<td>Amount</td>');
+		headder.append('</th></thead><tbody>');
+
+		var transid, ticker, tt, transDate, price, amt;
+
+		for (x in results) {
+			transDate = new Date(results[x].transDate);
+			transDate = procDate(transDate);
+			ticker = results[x].symbol;
+			transid = results[x].transId;
+			tt = results[x].transType;
+			price = Number(results[x].transPrice).toFixed(2);
+			amt = Number(results[x].transAmt).toFixed(2);
+
+			var id = "recent-trans-"+x;
+			//console.log(id);
+			pnldiv.append('<tr id="'+id+'">');
+			var row = $('#recent-trans #'+id);
+			row.append('<td>'+transid+'</td>');
+			row.append('<td>'+ticker+'</td>');
+			row.append('<td>'+tt+'</td>');
+			row.append('<td>'+transDate+'</td>');
+			row.append('<td>'+price+'</td>');
+			row.append('<td>'+amt+'</td></tr>');
+		}
+			row.append('</tbody');
+
+	}
+
+	function getRecentTrans () {
+		var accountId = $('#account-select').val();
+
+		var data = JSON.stringify({
+			'todo' : 'getTransFormat',
+			'params' : {
+				'accountId' : accountId
+			}
+		});	
+
+		$.ajax('trade',{
+			type : 'POST',
+			contentType : 'application/json',
+			dataType : 'JSON',
+			data : data,
+			success : function (results) {
+				console.log(results);
+				writeRecentTrans(results);
+			}
+		});
+	}
+
 });
+
+function procDate(dateObj) {
+  return dateObj.toISOString().substr(0,10);
+}

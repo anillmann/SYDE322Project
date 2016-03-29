@@ -53,6 +53,10 @@ exports.sqlQuery = function () {
 		var sql = new selectTrans(params);
 		return sql;
 	}
+	this.selectTransFormat = function (params) {
+		var sql = new selectTransFormat(params);
+		return sql;
+	}
 	this.deleteTrans = function (params) {
 		var sql = new deleteTrans(params);
 		return sql;
@@ -122,6 +126,15 @@ var selectTickers = function (params) {
 		if (params.accountId) { qry.where("accountId="+params.accountId); }
 		if (params.transId) { qry.where("transId="+params.transId); }
 	}
+	this.sqlStr = qry.toString();
+ }
+
+var selectTransFormat = function (params) {
+ 	var qry = squel.select().from("v_trans");
+	if (params) {
+		if (params.accountId) { qry.where("accountId="+params.accountId); }
+	}
+	qry.order("transDate",false);
 	this.sqlStr = qry.toString();
  }
 

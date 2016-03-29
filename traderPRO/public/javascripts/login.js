@@ -32,7 +32,7 @@
                     writeErr(errCheck(succCode));
                 }
                 if (succCode == 0) {
-                    window.location.replace('http://localhost:3100/metadatamgmt');
+                    window.location.replace('http://localhost:3100/portfolioOverview');
                 }
             }
         });
