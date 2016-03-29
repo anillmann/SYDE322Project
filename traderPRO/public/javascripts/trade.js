@@ -143,6 +143,7 @@ $(document).ready( function () {
             success : function (results) {
                 if (results) {
                     console.log("Transaction updated");
+                    getRecentTrans();
                     location.reload();
                 }
             }
@@ -167,6 +168,7 @@ $(document).ready( function () {
             success : function (results) {
                 if (results) {
                     console.log("Transaction deleted");
+                    getRecentTrans();
                     location.reload();
                 }
             }
@@ -222,15 +224,18 @@ $(document).ready( function () {
 					buttons : {
 						'Submit Transaction' : function () {
 							submitTrans(typeId,date,price,amt,ticker,account,action);
+							getRecentTrans();
 						}, 
 						Cancel : function () {
 							clearTransactionForm();
+							getRecentTrans();
 							$(this).dialog('destroy').empty();
 						}
 					},
 					close : function () {
 						//clearTransactionForm();
 						$(this).dialog('close').empty();
+						getRecentTrans();
 					}
 				});
 			}

@@ -15,6 +15,10 @@ block mainContainer
 
 	div.hidden-before-param
 		div.formBox
+			h4 Recent Transactions
+			table#recent-trans
+
+		div.formBox
 			h4 Add Transaction
 			div(id='add-trans')
 				form(id='add-trans-form')
@@ -83,9 +87,7 @@ block mainContainer
 						br
 						div(id='update-trans-delete')
 							input(type='button', value="Delete Transaction")
-		div.formBox
-			h4 Recent Transactions
-			table#recent-trans
+
 
 
 
