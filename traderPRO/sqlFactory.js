@@ -129,13 +129,15 @@ var insertTrans = function(params) {
 	var transAmt = params.transAmt;
 	var tickerId = params.tickerId;
 	var accountId = params.accountId;
-	this.sqlStr = squel.insert().into("trans")
+	var str = squel.insert().into("trans")
 							.set("transTypeId",transTypeId)
 							.set("transDate",procDate(transDate))
 							.set("transPrice",transPrice)
 							.set("transAmt",transAmt)
 							.set("accountId",accountId)
-							.set("tickerId",tickerId).toString();
+							.set("tickerId",tickerId).toString() + "; ";
+	str += "CALL calc_Positions('"+procDate(transDate)+"',@o1)"
+	this.sqlStr = str;
 }
 
 function procDate (str) {

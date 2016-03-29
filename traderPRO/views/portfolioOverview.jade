@@ -12,5 +12,23 @@ block mainContainer
 						option(value=account.accountId) #{account.accountName}
 
 	div.hidden-before-param
+		
 		div.formBox
 			h4 Portfolio Level Details
+			table#pnl
+
+		div.formBox
+			h4 Ticker Level Details
+			div
+				label(for="ticker") Choose Ticker
+				select(type="text", name="ticker", id="ticker-select")
+					option(selected='selected' disabled) Select ticker
+			table#pnldtl
+
+		div.formBox
+			h4 Calculate New Date
+				fieldset
+					label(for="calcDate") Select Date:
+					input(type="text", id="calc-date", name="calc-date")
+					br
+					input(type='button', id="calc-date-submit", value="Calcualte for Date")

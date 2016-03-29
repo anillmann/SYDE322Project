@@ -17,7 +17,6 @@ var d = new Date('2016-03-20');
 function procDate(dateObj) {
 	return dateObj.toISOString().substr(0,10);
 }
-var calcDate = procDate(d);
 
 function getPositions (accountId, calcDate) {
 	var calcPos = "CALL calc_Positions('"+calcDate+"',@o1); "
@@ -172,8 +171,6 @@ function getPositions (accountId, calcDate) {
 
 }
 
-//getPositions(accountId,calcDate);
-
 function getPnL(accountId) {
 	var sqlStr = squel.select().from("calcs").where("accountId="+accountId).order("calcDate",false).toString();
 	var pnl = {};
@@ -251,8 +248,5 @@ function getPnLDtl(accountId,tickerId) {
 		}
 	});
 }
-
-getPnL(accountId);
-getPnLDtl(accountId,tickerId);
 
 
