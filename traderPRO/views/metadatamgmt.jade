@@ -38,7 +38,7 @@ block mainContainer
 							option(selected='selected' disabled) Select asset class
 							each assetClass in assetClasses 
 								option(value=assetClass.assetClassId) #{assetClass.assetClass}
-					div.hidden								
+					div.hidden
 						div(id='add-ticker-field-symbol')
 							label(for='symbol') Ticker Symbol:
 							input(type="text", name="symbol")
@@ -72,10 +72,10 @@ block mainContainer
 						option(selected='selected' disabled) Select company to update
 						each company in companies 
 							option(value=company.companyId) #{company.companyName}
-					div.hidden					
+					div.hidden
 						div
 							label(for='companyName') Update Company Name:
-							input(type="text", name="companyName", id="update-company-name")					
+							input(type="text", name="companyName", id="update-company-name")
 						div(id='update-company-field-marketCap')
 							label(for='marketCap') Update Market Capitalization:
 							input(type="number", name="marketCap", id="update-company-marketCap")
@@ -112,7 +112,7 @@ block mainContainer
 								option(value=country.countryId) #{country.country}
 					div(id='update-ticker-field-symbol')
 						label(for='symbol') Update Ticker symbol:
-						input(type="text", name="symbol", id="update-ticker-symbol")			
+						input(type="text", name="symbol", id="update-ticker-symbol")
 					div(id='update-ticker-field-assetClass')
 						label(for='assetClass') Update Ticker Asset Class:
 						select(type="text", name="assetClass" id='update-ticker-assetClass-select')
