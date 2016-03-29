@@ -217,8 +217,15 @@ var userId = 1;
       var sqlParams = { 'userId' : userId };
       var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
       var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
+      var getRecentTrans = sqlGen.execSP('select_recentTrans',sqlParams,1).sqlStr;
+      var getTransTypes = sqlGen.selectTransTypes().sqlStr + "; ";
+      var getTickers = sqlGen.selectTickers().sqlStr + "; ";
 
-      var sqlStr = getAccounts + getAssetClasses;
+      console.log(getTransTypes);
+      console.log(getTickers);
+
+      var sqlStr = getAccounts + getAssetClasses + getTransTypes + getTickers + getRecentTrans;
+
 
       conn.query(sqlStr, function (err, results) {
         if (err) {
@@ -227,10 +234,14 @@ var userId = 1;
         } else {
           console.log("Success: "+sqlStr);
           //console.log(results);
+
           res.render('trade', {
             title : 'traderPRO - Trade', 
             accounts : results[0],
-            assetClasses : results[1]
+            assetClasses : results[1],
+            transTypes : results[2],
+            tickers : results[3],
+            transactions : results[4],
           });
         }
       });
@@ -240,6 +251,9 @@ var userId = 1;
       var todo = req.body.todo;
       var params = req.body.params;
       var sqlStr;
+
+      console.log("params");
+      console.log(params);
 
       switch (todo) {
         case 'getTransTypes' :
@@ -253,6 +267,14 @@ var userId = 1;
         case 'insertTrans' :
           sqlStr = sqlGen.insertTrans(params).sqlStr + "; ";
           break;
+        case 'getTrans' :
+          sqlStr = sqlGen.selectTrans(params).sqlStr + "; ";
+          break;
+        case 'updateTrans' :
+          sqlStr = sqlGen.execSP('update_trans',params,1).sqlStr;
+          break;
+        case 'deleteTrans' :
+          sqlStr = sqlGen.deleteTrans(params).sqlStr + "; ";
       }
 
       conn.query(sqlStr, function (err, results) {

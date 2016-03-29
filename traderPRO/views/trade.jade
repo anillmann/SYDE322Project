@@ -44,10 +44,67 @@ block mainContainer
 
 		div.formBox
 			h4 Ammend Transaction
-
+			div(id='update-trans')
+				form(id='select-update-trans-form')
+					fieldset
+						div(id='select-trans')
+							label(for='trans') Select Transaction ID
+							select(type="text", name="trans", id='select-trans-select')
+								option(selected='selected' disabled)
+								each transaction in transactions 
+									option(value=transaction.transactionId) #{transaction.transId}
+				form(id='update-transaction-form').hidden
+					fieldset
+						div(id='update-trans-field-type')
+							label(for='transType') Transaction Type:
+							select(type="text", name="transType", id ='update-trans-select-type')
+								option(selected='selected' disabled) Select type
+								each transType in transTypes 
+									option(value=transType.transTypeId) #{transType.transType}
+						div(id='update-trans-field-symbol')
+							label(for='symbol') Ticker Symbol:
+							select(type="text", name="symbol" id='update-trans-select-ticker' )
+								option(selected='selected' disabled) Select ticker
+								each ticker in tickers 
+									option(value=ticker.tickerId) #{ticker.symbol}
+						div(id='update-trans-field-transDate')
+							label(for='transDate') Transaction Date:
+							input(type='text', name='transDate' id ='update-trans-select-date').date-field
+						div(id='update-trans-field-transPrice')
+							label(for='transAmt') Price
+							input(type='number', name='transPrice', min=0, step=0.01, id='update-trans-select-price')
+						div(id='update-trans-field-transAmt')
+							label(for='transAmt') Amount:
+							input(type='number', name='transAmt', min=0 id='update-trans-select-transAmt')
+						div(id='update-trans-submit-button')
+							input(type='button', value="Ammend Transaction")
+						br
+						div(id='update-trans-delete')
+							input(type='button', value="Delete Transaction")
 		div.formBox
-			h4 Get Recent Transactions
-				form(id='get-trans-form')
+			h4 Recent Transactions
+			table
+				thead
+					tr
+						th ID
+						th Account
+						th Ticker
+						th Type
+						th Date
+						th Price
+						th Amount
+
+				tbody
+					each transaction in transactions
+						tr
+							td #{transaction.transId}
+							td #{transaction.accountName}
+							td #{transaction.symbol}
+							td #{transaction.transType}
+							td #{transaction.transDate}
+							td #{transaction.transPrice}
+							td #{transaction.transAmt}
+
 
 
 	div(id='trans-confirm').hidden
