@@ -1,10 +1,12 @@
 var express = require('express');
 var password = require('password-hash-and-salt');
 var app = require("express")();
-// var cookieParser = require('cookie-parser')
-// var session = require('express-session')
 //var routes = require('./routes');
 var bodyParser = require('body-parser')
+
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
 // MySQL connection
 var mysql = require('mysql');
 var conn = mysql.createConnection({
@@ -21,8 +23,9 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
-// app.use(cookieParser());
-// app.use(session);
+app.use(cookieParser());
+app.use(session({secret:"secretText"}));
+//app.use(expressSession());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -32,7 +35,8 @@ var sqlFactory = require('./sqlFactory.js');
 var yFin = require('yahoo-finance');
 var squel = require('squel');
 var exports = module.exports = {};
-exports.loggedIn = false;
+//exports.loggedIn = false;
+// var sess = req.session
 
 var sqlGen = new sqlFactory.sqlQuery(); 
 
@@ -85,7 +89,8 @@ var userId = 1;
                       else{
                         succ = 0;
                         console.log("Password correct");
-                        // req.session.loggedIn;
+                        req.session.loggedIn = true;
+                        //res.redirect('/portfolioOverview')
                       }
                       var id = results[1][0]['@o3'];
                       res.send(JSON.stringify({'success':succ}));
@@ -125,42 +130,52 @@ var userId = 1;
           }
         }
       });
+    if(req.session.loggedIn){
+      res.redirect('/portfolioOverview');
+    }
+
     });
 
     // META DATA MGMT
     app.get('/metadatamgmt', function(req, res){
-      // queries to get static data
-      var getSectors = sqlGen.selectSector().sqlStr + "; ";
-      var getCurrencies = sqlGen.selectCurrency().sqlStr + "; ";
-      var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
-      var getCompanies = sqlGen.selectCompany().sqlStr + "; ";
-      var getCountries = sqlGen.selectCountry().sqlStr + "; ";
-      var getIndustries = sqlGen.selectIndustry().sqlStr + "; ";
-      var getTickers = sqlGen.selectTickers().sqlStr + "; ";
-
-      console.log(getCurrencies);
-
-      var sqlStr = getSectors + getCurrencies + getAssetClasses + getCompanies + getCountries + getIndustries + getTickers;
-      
-      conn.query(sqlStr, function (err, results) {
-        if (err) {
-          console.log("Tried: "+sqlStr);
-          console.log("Got: "+err)
-        } else {
-          console.log("Success: "+sqlStr);
-          //console.log(results);
-          res.render('metadatamgmt', {
-            title : 'traderPRO - Metadata Management', 
-            sectors : results[0],
-            currencies : results[1],
-            assetClasses : results[2],
-            companies : results[3],
-            countries : results[4],
-            industries : results[5],
-            tickers : results[6]
-          });
+      if(!req.session.loggedIn){
+          res.redirect('/index');
         }
-      });       
+
+      else{
+      // queries to get static data
+        var getSectors = sqlGen.selectSector().sqlStr + "; ";
+        var getCurrencies = sqlGen.selectCurrency().sqlStr + "; ";
+        var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
+        var getCompanies = sqlGen.selectCompany().sqlStr + "; ";
+        var getCountries = sqlGen.selectCountry().sqlStr + "; ";
+        var getIndustries = sqlGen.selectIndustry().sqlStr + "; ";
+        var getTickers = sqlGen.selectTickers().sqlStr + "; ";
+
+        console.log(getCurrencies);
+
+        var sqlStr = getSectors + getCurrencies + getAssetClasses + getCompanies + getCountries + getIndustries + getTickers;
+        
+        conn.query(sqlStr, function (err, results) {
+          if (err) {
+            console.log("Tried: "+sqlStr);
+            console.log("Got: "+err)
+          } else {
+            console.log("Success: "+sqlStr);
+            //console.log(results);
+            res.render('metadatamgmt', {
+              title : 'traderPRO - Metadata Management', 
+              sectors : results[0],
+              currencies : results[1],
+              assetClasses : results[2],
+              companies : results[3],
+              countries : results[4],
+              industries : results[5],
+              tickers : results[6]
+            });
+          }
+        });
+      }       
     });
 
     app.post('/metadatamgmt', function (req, res) {
@@ -214,37 +229,44 @@ var userId = 1;
     });
 
     app.get('/trade', function (req, res) {
-      var sqlParams = { 'userId' : userId };
-      var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
-      var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
-      var getRecentTrans = sqlGen.execSP('select_recentTrans',sqlParams,1).sqlStr;
-      var getTransTypes = sqlGen.selectTransTypes().sqlStr + "; ";
-      var getTickers = sqlGen.selectTickers().sqlStr + "; ";
+      if(!req.session.loggedIn){
+          res.redirect('/index');
+      }
 
-      console.log(getTransTypes);
-      console.log(getTickers);
+      else {
 
-      var sqlStr = getAccounts + getAssetClasses + getTransTypes + getTickers + getRecentTrans;
+        var sqlParams = { 'userId' : userId };
+        var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+        var getAssetClasses = sqlGen.selectAssetClass().sqlStr + "; ";
+        var getRecentTrans = sqlGen.execSP('select_recentTrans',sqlParams,1).sqlStr;
+        var getTransTypes = sqlGen.selectTransTypes().sqlStr + "; ";
+        var getTickers = sqlGen.selectTickers().sqlStr + "; ";
+
+        console.log(getTransTypes);
+        console.log(getTickers);
+
+        var sqlStr = getAccounts + getAssetClasses + getTransTypes + getTickers + getRecentTrans;
 
 
-      conn.query(sqlStr, function (err, results) {
-        if (err) {
-          console.log("Tried: "+sqlStr);
-          console.log("Got: "+err)
-        } else {
-          console.log("Success: "+sqlStr);
-          //console.log(results);
+        conn.query(sqlStr, function (err, results) {
+          if (err) {
+            console.log("Tried: "+sqlStr);
+            console.log("Got: "+err)
+          } else {
+            console.log("Success: "+sqlStr);
+            //console.log(results);
 
-          res.render('trade', {
-            title : 'traderPRO - Trade', 
-            accounts : results[0],
-            assetClasses : results[1],
-            transTypes : results[2],
-            tickers : results[3],
-            transactions : results[4],
-          });
-        }
-      });
+            res.render('trade', {
+              title : 'traderPRO - Trade', 
+              accounts : results[0],
+              assetClasses : results[1],
+              transTypes : results[2],
+              tickers : results[3],
+              transactions : results[4],
+            });
+          }
+        });
+      }
     });
 
     app.post('/trade', function (req, res) {
@@ -291,24 +313,32 @@ var userId = 1;
     });
 
     app.get('/portfolioOverview', function(req, res){  
-      var sqlParams = { 'userId' : userId };
-      var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+      if(!req.session.loggedIn){
+        console.log("NOT LOGGED IN")
+          res.redirect('/index');
+      }
 
-      var sqlStr = getAccounts;
+      else {
 
-      conn.query(sqlStr, function (err, results) {
-        if (err) {
-          console.log("Tried: "+sqlStr);
-          console.log("Got: "+err)
-        } else {
-          console.log("Success: "+sqlStr);
-          //console.log(results);
-          res.render('portfolioOverview', {
-            title : 'traderPRO - Portfolio Overview', 
-            accounts : results
-          });
-        }
-      });    
+        var sqlParams = { 'userId' : userId };
+        var getAccounts = sqlGen.selectAccount(sqlParams).sqlStr + "; ";
+
+        var sqlStr = getAccounts;
+
+        conn.query(sqlStr, function (err, results) {
+          if (err) {
+            console.log("Tried: "+sqlStr);
+            console.log("Got: "+err)
+          } else {
+            console.log("Success: "+sqlStr);
+            //console.log(results);
+            res.render('portfolioOverview', {
+              title : 'traderPRO - Portfolio Overview', 
+              accounts : results
+            });
+          }
+        }); 
+      }   
     });
 
 
