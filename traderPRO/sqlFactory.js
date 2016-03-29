@@ -17,6 +17,10 @@ exports.sqlQuery = function () {
 		var sql = new selectSector();
 		return sql;
 	}
+	this.selectTransTypes = function () {
+		var sql = new selectTransTypes();
+		return sql;
+	}
 	this.selectIndustry = function (params) {
 		var sql = new selectIndustry(params);
 		return sql;
@@ -94,6 +98,10 @@ var selectValidTransTypes = function (params) {
 	this.sqlStr	= squel.select().from("v_transtypes").where("assetClassId="+assetClassId).toString();
 }
 
+var selectTransTypes = function () {
+	this.sqlStr = squel.select().from("transtype").toString();
+}
+
 var selectTickers = function (params) {
 	var qry = squel.select().from("v_tickers");
 	if (params) {
@@ -107,8 +115,8 @@ var selectTickers = function (params) {
  var selectTrans = function (params) {
  	var qry = squel.select().from("trans");
 	if (params) {
-		var accountId = params.accountId;
-		qry = qry.where("accountId="+accountId);
+		if (params.accountId) { qry.where("accountId="+params.accountId); }
+		if (params.transId) { qry.where("transId="+params.transId); }
 	}
 	this.sqlStr = qry.toString();
  }

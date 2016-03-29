@@ -15,23 +15,23 @@ $(document).ready( function () {
         clearTransactionForm();
 		$('.hidden-before-param').show();
 
-		var sqlParams = JSON.stringify({
-			'todo' : 'getRecentTrans',
-			'sqlParams' : {
-				'accountId' : accountId
-			}
-		});
+		// var sqlParams = JSON.stringify({
+		// 	'todo' : 'getRecentTrans',
+		// 	'sqlParams' : {
+		// 		'accountId' : accountId
+		// 	}
+		// });
 
-		$.ajax('trade',{
-			type : 'POST',
-			contentType : 'application/json',
-			dataType : 'JSON',
-			data : sqlParams,
-			success : function(results){
-				//$('#myTable > tbody:last-child').append('<tr><td>...</tr>');
+		// $.ajax('trade',{
+		// 	type : 'POST',
+		// 	contentType : 'application/json',
+		// 	dataType : 'JSON',
+		// 	data : sqlParams,
+		// 	success : function(results){
+		// 		//$('#myTable > tbody:last-child').append('<tr><td>...</tr>');
 
-			}
-		});
+		// 	}
+		// });
 	});
 
 	function clearTransactionForm () {
@@ -83,6 +83,40 @@ $(document).ready( function () {
 			}
 		});
 	});
+	$('#select-trans-select').change( function () {
+		var transId = $(this).val();
+
+		var data = JSON.stringify({
+			'todo' : 'getTrans',
+			'params' : {
+				'transId' : transId
+			}
+		});	
+
+		$.ajax('trade',{
+			type : 'POST',
+			contentType : 'application/json',
+			dataType : 'JSON',
+			data : data,
+			success : function (results) {
+				console.log(results);
+				var transType = results[0].transTypeId;
+				var transDate =results[0].transDate;
+				var dateStr = $.datepicker.formatDate("mm/dd/yy", new Date(transDate));
+				var transPrice = results[0].transPrice;
+				var transAmt = results[0].transAmt;
+				var tickerId = results[0].tickerId;
+
+				$('#update-trans-select-type').val(transType);
+				$('#update-trans-select-ticker').val(tickerId);
+				$('#update-trans-select-date').val(dateStr);
+				$('#update-trans-select-price').val(transPrice);
+				$('#update-trans-select-transAmt').val(transAmt);
+
+				$('#update-transaction-form').show();
+			}
+		});
+	});
 
 	$('#add-trans-submit').click( function () {
 		var transTypeId = $('#add-trans-field-transType select').val();
@@ -95,6 +129,41 @@ $(document).ready( function () {
 		transConfirm(transTypeId,transType,tranDate,transPrice,transAmt,tickerId,accountId,'insert');
 
 	});
+	$('#update-trans-submit-button').click( function () {
+        var transId = $('#select-trans-select').val();
+        var transTypeId = $('#update-trans-select-type').val();
+        var transDate = $('#update-trans-select-date').val();       
+        var transPrice = $('#update-trans-select-price').val();
+        var transAmt = $('#update-trans-select-transAmt').val();
+        var tickerId = $('#update-trans-select-ticker').val();
+
+
+        var data = JSON.stringify({
+            'todo' : 'updateTrans', 
+            'params' : {
+                'transId' : transId,
+                'transTypeId' : transTypeId,
+                'transDate' : transDate,
+                'transPrice' : transPrice,
+                'transAmt' : transAmt, 
+                'tickerId' : tickerId 
+            }
+        });
+
+        $.ajax('metadatamgmt',{
+            type : 'POST',
+            contentType : 'application/json',
+            dataType : 'JSON',
+            data : data,
+            success : function (results) {
+                if (results) {
+                    console.log("Transaction updated");
+                    location.reload();
+                }
+            }
+        });
+
+    });
 
 	function transConfirm (typeId,type,date,price,amt,ticker,account,action) {
 		var dialog = $('#trans-confirm');

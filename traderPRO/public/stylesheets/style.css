@@ -31,3 +31,7 @@ table, th, td {
     border: 1px solid black;
     padding: 15px;
 }
+
+.button {
+  padding:15px;
+}
